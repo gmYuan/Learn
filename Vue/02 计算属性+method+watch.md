@@ -54,7 +54,7 @@ var vm = new Vue({
  <p>翻转结果是: {{ reversedMessage }}</p>
 ```
 
-关于计算属性更多的使用方法(包括getter和setter)，参见: [计算属性 代码示例]()
+关于计算属性更多的使用方法(包括getter和setter)，参见: [计算属性 代码示例](https://github.com/gmYuan/my_learn/blob/master/Vue/code/02%20%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7.html)
 
 
 ## <span id="3">3 计算属性 和 method的区别是什么 </span>
