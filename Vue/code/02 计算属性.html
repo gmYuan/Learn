@@ -7,29 +7,45 @@
 
 <body>
 	<div id="app">
-    {{msg}} </br>
-    <!-- 功能1: 翻转显示信息 -->
-    {{msg.split(',').reverse().join(',')}} </br>
-    {{reverseMsg}}</br>
+    <p> 
+      功能1: 翻转显示信息</br>
+        {{msg}} </br>
+        {{msg.split(',').reverse().join(',')}} </br>
+        {{reverseMsg}}</br>
+    </p> 
+    
+    <p>
+      功能2.1: A实例里的计算属性， 可以依赖多个数据值</br>
+      {{prices}}</br>
+    </p>
 
-    <!-- 功能2.1: A实例里的计算属性， 可以依赖多个数据值 -->
-    {{prices}}</br>
+    <p>
+      功能2.2:A实例里的计算属性 还可以依赖 B实例的数据</br>
+      {{otherapp}}</br>
+    </p>
 
-    <!-- 功能2.2:A实例里的计算属性 还可以依赖 B实例的数据 -->
-    {{otherapp}}</br>
 
-    <!-- 关于get 和 setter的示例 -->
-    <input type="text" v-model="fullName"></input>  </br>
-    姓名: {{newName}}</br>
+    <p>
+      关于get 和 setter的示例</br>
 
-    <!-- 计算属性和方法的区别 -->
-    计算属性: {{codate}}</br> //只有依赖的数据发生变化时，才会调用
-    方法设置: {{medate()}}  //当页面数据变化触发渲染时，就会调用
+      <input type="text" v-model="fullName"></input>  </br>
+      姓名: {{newName}}</br>
+    </p>
+    
+    
+    <p>
+      计算属性和方法的区别</br>
+
+      计算属性: {{codate}} //只有依赖的数据发生变化时，才会调用     </br>
+      方法设置: {{medate()}}  //当页面数据变化触发渲染时，就会调用
+    </p>
+
+   
 
 	</div>
 
 
-	<script src="https://cdn.bootcss.com/vue/2.6.5/vue.min.js"></script>
+	<script src="https://cdn.bootcss.com/vue/2.6.5/vue.js"></script>
 	<script>
      var app2 = new Vue({
       el: '#app2',
