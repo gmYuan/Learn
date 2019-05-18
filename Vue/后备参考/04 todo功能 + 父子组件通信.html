@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+	<meta charset="UTF-8">
+	<title>todo功能 + 父子组件通信 </title>
+</head>
+<body>
+	<div id="app">
+    <div>
+      <input type="text" placeholder="输入代办事项" v-model="inputValue">
+      <button @click="handleBtn">确定</button>
+    </div>
+    
+    <ul>
+        <!--S1 父组件向子组件传递数据的方式: v-bind获取&绑定数据 + 通过props传递数据  -->
+        <!--S2 子组件向父组件传递数据的方式: 子组件template中注册事件回调，内部使用$emit + 父组件监听$emit定义的事件-->
+        <!--S3 自定义的 组件名/事件名，最好都是要key-base连字符语法形式-->
+
+      <todo-item
+        v-for="(item, index) in list"
+        v-bind:content="item"
+        v-bind:index="index"
+        @delete-task="handleDelete"
+      >
+
+      </todo-item>
+    </ul>
+
+
+<!--    <div>-->
+<!--      这段代码的具体参考文档是:-->
+<!--      <p>-->
+<!--        <a href="https://cn.vuejs.org/v2/guide/components.html">-->
+<!--          Vue官方文档: 组件基础-->
+<!--        </a>-->
+<!--      </p>-->
+<!--    </div>-->
+	</div>
+
+	<script src="https://cdn.bootcss.com/vue/2.6.5/vue.js"></script>
+	<script>
+	let app = new Vue({
+       el: '#app',
+        data: {
+            list: [],
+            inputValue: '',
+        },
+        methods: {
+           handleBtn(){
+            this.list.push(this.inputValue)
+            this.inputValue = ''   //双向绑定，数据变化会同时导致页面显示变化
+          },
+            handleDelete(i){
+               this.list.splice(i,1)   //列表中删除某一项
+            }
+        },
+      // 局部注册方式,最佳使用方式是连字符方式
+      components: {
+        'todo-item': {
+          props: ['content', 'index'],
+          template: '<li @click="deleteItem(index)">{{index}}-- {{content}}</li>',
+          methods: {
+              deleteItem(i){
+                  this.$emit('delete-task', i)
+              }
+
+          }
+        }
+      }
+    })
+	</script>
+
+</body>
+</html>

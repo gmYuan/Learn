@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+	<meta charset="UTF-8">
+  <title>render里的参数介绍</title>
+  <style>
+  	#app {margin-bottom: 30px;}
+  	li {list-style: none;}
+    
+  </style>
+  
+</head>
+
+<body>
+	<div id="app">
+    <child-component :showdefault="showdefault">
+    </child-component>
+
+    <div>
+      <button @click="changeshow">点击切换图片</button>  ----
+      {{showdefault}}
+    </div>
+   
+
+    <!-- 1 需求1: 切换父组件数据，同时让子组件内容根据数据更改显示 -->
+    <!-- S1.1 在父组件作用域中创建数据 + 创建可以改变数据值的按钮 -->
+    <!-- S1.2 把父组件的数据 传递给 子组件-->
+    <!-- S1.3 子组件根据数据值的不同， 设置不同的显示内容 -->
+    <!-- S1.4 用render函数渲染出 子组件html内容 -->
+
+    <!-- S2.1 怎么把父组件数据通过props传递给子组件: 在子组件的标签内传入要传入的数据，动态绑定可以传入变量而已 -->
+    <!-- S2.2 怎么在render的第2个参数里传入变量: 直接传入变量名即可 -->
+	</div>
+
+	<script src="https://cdn.bootcss.com/vue/2.6.8/vue.js"></script> 
+	<!-- <script> Vue.config.devtools = true</script> -->
+
+	<script>
+    let app = new Vue({
+      el: '#app',
+      data: {
+        showdefault: true
+      },
+      methods:{
+        changeshow(){
+          this.showdefault = !this.showdefault
+        }
+      },
+      components: {
+        'child-component': {
+          props: ["showdefault"],
+          render(createElement){
+            let src
+            if (this.showdefault === true){
+              src = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552823160601&di=db130cfc9f2066b296900e3fa42110da&imgtype=0&src=http%3A%2F%2Fb.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2F2e2eb9389b504fc27c224b2debdde71190ef6d9d.jpg'
+            } else {
+              src = 'https://ss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=890aa5f33701213fd03348dc64e736f8/fc1f4134970a304e210531d0dfc8a786c9175cf0.jpg'
+            }
+            return createElement('img', {
+              attrs: {
+                'src': src
+              },
+
+              style: {
+                width: '400px',
+                height: '300px'
+              }
+            })
+
+          }
+        }
+      }
+     
+    })
+      
+	</script>
+	
+</body>
+</html>
+

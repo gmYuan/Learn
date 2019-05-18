@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+	<meta charset="UTF-8">
+  <title>函数式组件</title>
+  <style>
+  	#app {margin-bottom: 30px;}
+  	li {list-style: none;}
+    
+  </style>
+  
+</head>
+
+<body>
+	<div id="app"> 
+    <!-- 1 需求1: 了解函数式组件 -->
+   
+    <child-component title="我是函数式组件的标题，哈哈"></child-component>
+
+	</div>
+
+	<script src="https://cdn.bootcss.com/vue/2.6.8/vue.js"></script> 
+	<!-- <script> Vue.config.devtools = true</script> -->
+
+	<script>
+    let app = new Vue({
+      el: '#app',
+      data: {
+        msg: '请输入姓名'
+      },
+     
+      components: {
+        'child-component': {
+          data(){
+            return {
+             person: {
+               name: 'star',
+               age: 26
+             }
+            }
+          },
+          functional: true,
+          render(createElement, context){
+            return createElement('button', {
+              on: {
+                click(){
+                  console.log(context)
+                  console.log(context.props.title)
+                }
+              }
+            },
+            '点击我了解context'
+            )  
+
+          } //对应render
+        }
+      }
+     
+    })
+      
+	</script>
+	
+</body>
+</html>
+

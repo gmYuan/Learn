@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+	<meta charset="UTF-8">
+  <title>兄弟间通信 + 设置父子组件data值</title>
+  <style>
+  	#app {margin-bottom: 30px;}
+  	li {list-style: none;}
+  </style>
+  
+</head>
+
+<body>
+	<div id="app">
+		<!-- 需求1: b组件可以修改a组件内部的值 -->
+
+		<!-- S1 细化- 形象化理解 -->
+		<!-- S1.1 首先要有一个发布订阅的中心站，因为中心站是挂载在 Vue实例上的，且第一个实例的中心站用来传递 子-父间通信 -->
+		<!-- S1.2 所以，要想实现B\C间兄弟通信，就得再创建一个中心站  -->
+		<!-- S1.3 建好中心站后，就只要b发布+a订阅即可(订阅的一方是被动接收数据的一方) -->
+
+		<!-- S2 自测- 自我检测 -->
+		<!-- S2.1 怎么创建中心站—— 可以在已有实例的data中创建中心站对象 -->
+
+		<!-- S3 反思- 出错点+避免方法 -->
+		<!-- S3.1 methods里使用数据时, 别忘记使用 this.xxx -->
+		<!-- S3.2 子组件里访问全局实例的data数据时，要使用 this.$root.xxx -->
+		
+		<!-- S3.3 在created阶段订阅，是因为created可以绑定this(指向子组件对象)，从而this.$root访问 全局实例里的bus对象，从而调用$on方法-->
+
+		<!-- S3.4 在子组件$on()里使用回调函数时，this不会指向子组件对象，而是指向uid=0的对象，注意，app全局实例是uid=1 ，所以可使用箭头函数绑定正确 子组件对象-->
+		
+
+		<!-- <button @click="test">点击看this</button> -->
+		<a-component></a-component>
+		<b-component></b-component>
+
+
+		<!-- 需求2: 子组件访问父组件的data里变量 -->
+
+		<!-- 2.1+2.2 子组件定义方法 + 通过this$parent.xxx 即可 -->
+		<div>我是父组件的值----  {{msg}}</div>
+
+
+		<!-- 需求3: 父组件可以访问子组件data里的变量 -->
+
+		<!-- 1 细化： 子组件有可能有很多，所以可以给儿子们一个序号昵称，即老大，老二，老三 -->
+		
+		<!-- 2 自测 -->
+		<!-- 2.1 如何子组件取昵称： 通过ref特性添加编号xxx -->
+		<!-- 2.2 如何访问子组件编号: $refs.xxx -->
+		<hr>
+		<a-component ref="firstchild"></a-component>
+		<b-component ref="secondchild"></b-component>
+		<br>
+
+		<button @click="showchild" style="margin-top:30px">点击就展示子组件数据啦</button>
+		<div>子组件数据--- {{child}}</div>
+
+		
+	</div>
+
+	<script src="https://cdn.bootcss.com/vue/2.6.8/vue.js"></script> 
+	<!-- <script> Vue.config.devtools = true</script> -->
+
+	<script>
+    let app = new Vue({
+      el: '#app',
+      data: {
+      	bus: new Vue(),
+      	msg: '我没改变呢',
+      	child: '--占位先'
+      },
+      components: {
+      	'a-component': {
+      		data(){
+      			return {
+      				total: 4000,
+      				msg: '我是a子组件数据'
+      			}
+      		},
+      		created(){
+      			let self = this
+      			this.$root.bus.$on('changetotal', function(value){
+      				self.total = value
+      				// console.log(self)
+      				// console.log(this)	
+      			})
+      		},
+      		methods:{
+      			changfather(){
+      				this.$parent.msg = '我被a子组件改变了呀'
+      			}
+      		},
+
+      		template: `
+      			<div>我是a组件里的值-- {{total}}
+							<button @click="changfather">我是a组件里的按钮，点击我改变父组件的属性值</button>
+						</div>
+      		`
+      	},
+
+      	'b-component': {
+      		data(){
+      			return {
+      				total2: 4000,
+      				msg: '我是b子组件的数据'
+      			}
+      		},
+      		template: `
+      		<button @click="change">我是b组件按钮，点击我可以改变a组件的值</button>
+      		`,
+      		methods:{
+      			change(){
+      				this.total2 = this.total2 + 100
+      				this.$root.bus.$emit('changetotal', this.total2)
+      			}
+      		}
+      	}
+      },
+
+      methods: {
+      	test(){
+      		console.log(this)
+      	},
+      	showchild(){
+      		this.child = this.$refs.firstchild.msg
+      	}
+      }
+
+     
+    })
+      
+	</script>
+	
+
+</body>
+</html>
+

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+	<meta charset="UTF-8">
+  <title>render介绍</title>
+  <style>
+  	#app {margin-bottom: 30px;}
+  	li {list-style: none;}
+    
+  </style>
+  
+</head>
+
+<body>
+	<div id="app">
+
+		<!-- 1 需求1: 子组件中根据父组件传入的参数，显示对应的部分 -->
+
+		<!-- S1 典型的 盒子需求 -->
+		<!-- S2.1 如何父传子组件数据:  props属性-->
+    <!-- S2.2 如何根据数据显示对应内容:  template里使用 v-if-->
+
+    <!-- S3.1 v-if要在template里的内部结构标签里使用，如 div/h1等  -->
+
+    <child-component :level="level">
+      <p>hello world!</p>
+    </child-component> 
+
+    <template id="showtemp">
+      <div>
+        <h1 v-if="level === 1">
+          <slot></slot>
+        </h1>
+        <h2 v-else-if="level === 2">
+          <slot></slot>
+        </h2>
+        <h3 v-else="level === 3">
+          <slot></slot>
+        </h3>    
+      </div>
+    </template>
+
+    <hr>
+    <!-- 2 需求2: 同样是上面情况，使用render函数实现 -->
+    <child2-component :level="level">
+      <p>render实现的渲染~</p>
+    </child2-component>
+
+	</div>
+
+	<script src="https://cdn.bootcss.com/vue/2.6.8/vue.js"></script> 
+	<!-- <script> Vue.config.devtools = true</script> -->
+
+	<script>
+    let app = new Vue({
+      el: '#app',
+      computed: {
+        level(){
+          return Math.ceil(Math.random()*3) 
+        }
+      },
+      components: {
+        'child-component': {
+          props: {
+            level: {
+              type: Number,
+              required: true
+            }
+          },
+          template: '#showtemp'
+        },
+
+        'child2-component': {
+          props: {
+            level: {
+              type: Number,
+              required: true
+            }
+          },
+          render(createElement){
+            return createElement("h"+ this.level, this.$slots.default)
+
+          }
+        }
+      }
+      
+    })
+      
+	</script>
+	
+</body>
+</html>
+

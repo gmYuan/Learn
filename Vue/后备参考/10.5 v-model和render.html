@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+	<meta charset="UTF-8">
+  <title>render里的参数介绍</title>
+  <style>
+  	#app {margin-bottom: 30px;}
+  	li {list-style: none;}
+    
+  </style>
+  
+</head>
+
+<body>
+	<div id="app"> 
+    <!-- 1 需求1: 用render实现，在子组件内输入的内容实时在父组件中渲染显示出来 -->
+    <!-- 1.S1 父组件的数据要作为默认的value值，传入到子组件中显示到input中:  使用props + 设置value值-->
+    <!-- 1.S2 子组件修改input的内容，然后把子组件的数据传出给父组件: 监听子组件的input事件 + 使用$emit + $on -->
+
+    <!-- 2.S1 怎么设置render里的属性值: 要使用domProps -->
+    <!-- 2.S2 怎么使用$emit: $emit是this组件实例的一个方法 -->
+    <!-- 2.S3 怎么使用$on: 直接监听input方法即可，在回调方法里接收数据 -->
+
+    <!-- 3.S1 使用render后，一定要使用 return 返回出 createElement结果 -->
+    <!-- 3.S2 传入input的输入值，应该使用 e.target.value -->
+    <!-- 3.S3 v-model的实质是: 自动绑定了input事件 + 自动把变量和返回的value进行了赋值绑定 -->
+
+
+    <child-component :msg="msg" v-model="msg"></child-component>   ----{{msg}}
+
+
+	</div>
+
+	<script src="https://cdn.bootcss.com/vue/2.6.8/vue.js"></script> 
+	<!-- <script> Vue.config.devtools = true</script> -->
+
+	<script>
+    let app = new Vue({
+      el: '#app',
+      data: {
+        msg: '请输入姓名'
+      },
+      // methods: {
+      //   showmsg(value){
+      //     this.msg = value
+      //   }
+      // },
+     
+      components: {
+        'child-component': {
+          props:['msg'],
+          data(){
+            return {
+              value: this.msg
+            }
+          },
+          render(createElement){
+            let self = this
+            return createElement('input', {
+              domProps: {
+                value: this.value
+              },
+              on: {
+                click(){
+                  self.value = ''
+                },
+                input(e){
+                  self.$emit('input', e.target.value)
+                }
+              }  //对应on
+
+            })  
+
+          } //对应render
+        }
+      }
+     
+    })
+      
+	</script>
+	
+</body>
+</html>
+

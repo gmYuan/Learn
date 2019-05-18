@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+	<meta charset="UTF-8">
+  <title>render里的参数介绍</title>
+  <style>
+  	#app {margin-bottom: 30px;}
+  	li {list-style: none;}
+    
+  </style>
+  
+</head>
+
+<body>
+	<div id="app"> 
+    <!-- 1 需求1: 用render实现，在子组件内的数据 传出到子组件html标签作用域的template中 -->
+    <!-- 1.S1 在子组件内定义数据 + render内使用this.$scopedSlots -->
+    <!-- 1.S2 在子组件html标签内 使用v-slot绑定 接收的作用域名称 -->
+
+    <!-- 3.S1 this.$scopedSlots返回的是 v-node数组，所以在 createElement里用数组传入-->
+    <!-- 3.S2 this.$scopedSlots是方法，接收参数可以是对象-->
+    
+
+    <child-component>
+      <template v-slot="content">
+        {{content.person.name}}
+        {{content.person.age}}
+      </template>
+
+      
+    </child-component>   
+
+
+	</div>
+
+	<script src="https://cdn.bootcss.com/vue/2.6.8/vue.js"></script> 
+	<!-- <script> Vue.config.devtools = true</script> -->
+
+	<script>
+    let app = new Vue({
+      el: '#app',
+      data: {
+        msg: '请输入姓名'
+      },
+     
+      components: {
+        'child-component': {
+          data(){
+            return {
+             person: {
+               name: 'star',
+               age: 26
+             }
+            }
+          },
+          render(createElement){
+            return createElement('div',[
+              this.$scopedSlots.default({
+                person: this.person
+              })
+
+            ]
+
+            )  
+
+          } //对应render
+        }
+      }
+     
+    })
+      
+	</script>
+	
+</body>
+</html>
+

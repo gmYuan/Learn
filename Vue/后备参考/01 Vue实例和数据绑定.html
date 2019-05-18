@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+	<meta charset="UTF-8">
+	<title>Vue实例和数据绑定</title>
+</head>
+<body>
+	<div id="app">
+
+		这段代码的具体参考文档是:
+		
+		<p>
+			<a href="https://cn.vuejs.org/v2/guide/instance.html">
+				Vue官方文档: Vue 实例
+			</a>
+		</p>
+	
+		
+	</div>
+
+
+	<script src="https://cdn.bootcss.com/vue/2.6.5/vue.min.js"></script>
+	<script>
+		let app = new Vue({
+			el: '#app',      //el的值可以是html标签，也可以是CSS选择器语法
+			data: {          // data内部保存着 可以双向绑定的数据
+				msg: 'hello world!',
+				a: 2 
+			}
+		})
+	</script>
+
+	<script>
+		alert(app.$el)  //通过vue实例.$属性名，来访问 vue里定义的属性
+		alert(app.a)  //可以不用加$,来访我vue实例.$data里的属性
+	</script>
+	
+</body>
+</html>

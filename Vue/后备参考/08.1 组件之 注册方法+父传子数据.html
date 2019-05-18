@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+	<meta charset="UTF-8">
+  <title>父-子组件</title>
+  <style>
+  	#app {margin-bottom: 30px;}
+  	li {list-style: none;}
+  </style>
+  
+</head>
+
+<body>
+
+	<div id="app">
+		<!-- 1.1 全局注册 -->
+		<my-component></my-component>
+		<my-component></my-component>	
+		<hr>
+
+		<!-- 1.2 局部注册 -->
+		<inner-component></inner-component>
+		<br>
+
+		<!-- 1.3 脱离html标签的限制 -->
+		<table>
+			<!-- 用is属性挂载组件 -->
+			<tbody is="inner-component"></tbody>
+		</table>
+		<hr>
+
+		<!-- 2.1 父组件传递数据给 子组件: 固定值 -->
+		<second-component info="outmsg"></second-component>
+		<br>
+		<!-- 2.2 父组件传递数据给 子组件: 动态值 -->
+		<second-component :info="outmsg"></second-component>
+		<hr>
+
+
+		<!-- 3.1 props使用场景1: 获取传递值作为数据初始值 -->
+		<tri-component :price="outnum"></tri-component>
+		<br>
+
+		<!-- 3.2 props使用场景2: 传递值用作处理的原始值-->
+		<!-- 需求: 通过父组件的数据，控制子组件的宽度 -->
+		<input type="text" v-model='width'>
+
+		<forth-component :width='width'></forth-component>	
+	</div>
+
+	<script src="https://cdn.bootcss.com/vue/2.6.5/vue.min.js"></script>
+
+	<script>
+    Vue.component('my-component', {
+    	data(){
+    		return {
+    			count: 0
+    		}
+    	},
+    	template: `
+    		<div>
+    		我是全局注册的组件
+				<button @click="count++">{{count}}</button>
+				</div>
+    	`
+    })
+
+    let app = new Vue({
+      el: '#app',
+      data: {
+      	outmsg: "hello",
+				outnum: 20,
+				width: 100
+      },
+      components: {
+      	'inner-component': {
+      		data(){
+      			return {
+      				msg: 'world'
+      			}
+      		},
+      		template: 
+      			'<div>我是内部的局部组件--{{msg}}</div>'
+      	},
+
+				'second-component': {
+					props: ['info'],
+					template: '<div>内部组件2收到父组件的信息了-- {{info}}--- {{typeof info}}</div>'
+
+				},
+
+				'tri-component': {
+					props: ['price'],
+					data(){
+						return {
+							count: this.price
+						}
+
+					},
+					template: '<div>子组件获取的数据是--: {{price}}</div>'
+				},
+
+				'forth-component': {
+					props: ['width'],
+					template: '<div :style= "style">获取的宽度值是{{width}}</div>',
+					computed: {
+						style(){
+							return {
+								width: this.width + 'px',
+								background: '#FFC2DB',
+								border: '1px solid'
+							}
+						}
+					}
+
+
+				}
+
+
+      }
+
+    })
+
+
+	</script>
+
+</body>
+</html>
+

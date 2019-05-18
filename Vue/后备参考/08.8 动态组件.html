@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+	<meta charset="UTF-8">
+  <title>动态组件</title>
+  <style>
+  	#app {margin-bottom: 30px;}
+  	li {list-style: none;}
+    .boxstyle {
+      padding: 6px 10px;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      background: #f0f0f0;
+      margin-bottom: -1px;
+      margin-right: -1px;
+    }
+    .active {
+      border: 2px solid #ffc8c3;
+    }
+  </style>
+  
+</head>
+
+<body>
+	<div id="app">
+
+		<!-- 1 需求1: 可以tab切换 组件显示部分 -->
+
+		<!-- S1 类比成从盒子里取物品， 所以要有盒子名标记，盒子名称最好就是物品名称，这样最直观 -->
+
+		<!-- S2.1 如何设置盒子: 盒子本身显示 + 添加盒子名称-->
+    <!-- S2.2 如何取出物品显示信息： 用is找到对应的盒子名 -->
+
+    <!-- S3.1 组件methods里可以直接访问到 v-for的遍历变量 -->
+    <!-- S3.2 实例内部注册组件是使用 components: {xxx} -->
+
+
+    <div>
+      <button v-for="box in boxs" :class="[boxstyle, {active: box===current}]" @click='showactive(box)'>
+        {{box}}
+      </button>
+    </div>
+
+    <component :is="showcontent">
+      <!-- <template></template> -->
+    </component>
+
+
+    
+	</div>
+
+	<script src="https://cdn.bootcss.com/vue/2.6.8/vue.js"></script> 
+	<!-- <script> Vue.config.devtools = true</script> -->
+
+	<script>
+    let app = new Vue({
+      el: '#app',
+      data: {	
+      	boxs: ['tab1', 'tab2', 'tab3'],
+        boxstyle: 'boxstyle',
+        current: 'tab1'
+      },
+
+      components: {
+        'box-tab1':{
+          template: `<div>组件A内容---one</div>`
+        },
+        'box-tab2':{
+          template: `<div>组件B内容---two</div> `
+        },
+        'box-tab3':{
+          template: `<div>组件C内容--- let'go</div>`
+        }
+
+      },
+
+
+      computed:{
+        showcontent(){
+          return 'box-' + this.current
+        }
+      },
+      
+      methods: {
+        showactive(box){
+          this.current = box
+        }
+      }
+      
+    })
+      
+	</script>
+	
+
+</body>
+</html>
+

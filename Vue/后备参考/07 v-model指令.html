@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+	<meta charset="UTF-8">
+  <title>v-model指令</title>
+  <style>
+  	#app {margin-bottom: 30px;}
+  	li {list-style: none;}
+  </style>
+  
+</head>
+
+<body>
+	<div id="app">
+
+		<!-- 1.1 单行文本输入框 ,v-model的值是 输入值-->
+		<input type="text"  placeholder="占位1" v-model="msg">{{msg}}
+		
+		<!-- 1.2 多行文本输入框，输入值是 输入值 -->
+		<div style="margin-top: 20px;">
+			<textarea cols="30" rows="2" v-model="mulmsg">124</textarea>
+			{{mulmsg}}
+		</div>
+		<hr>
+
+		<!-- 1.3 单选按钮 -->
+
+		<!-- 单个单选按钮 -->
+		<input type="radio" name="lala" value="zhengnan" v-bind:checked="oneradio">正南
+		{{oneradio}}
+
+		<!-- 多个单选按钮 -->
+		<ul>
+			<li>
+				<label>
+					<input type="radio" value="xiaoxin" name="labi"
+					v-model="radiomsg">
+					小新
+				</label>
+			</li>
+			<li>
+				<label> 
+					<input type="radio" value="fengjian" name="labi" v-model="radiomsg">
+					风间
+				</label>
+			</li>
+			<li>
+				<label> 
+					<input type="radio" value="xiao ai" name="labi"
+					v-model="radiomsg">
+					小爱
+				</label>
+			</li>
+			{{radiomsg}}
+		</ul>
+		<hr>
+
+		<!-- 1.4 复选按钮 -->
+		<!-- 单个复选框 -->
+		<input type="checkbox" name="renwu" value="xiaobai" v-model="onecheck">小白
+		{{onecheck}}
+
+		<!-- 多个复选框 -->
+		<ul>
+			<li>
+				<label><input type="checkbox" name="lz" value="wukong" v-model="mulcheck">悟空</label>
+			</li>
+			<li>
+				<label><input type="checkbox" name="lz" value="wufan" v-model="mulcheck">悟饭</label>
+			</li>
+			<li>
+				<label><input type="checkbox" name="lz" value="beijita" v-model="mulcheck">贝吉塔</label>
+			</li>
+			{{mulcheck}}
+		</ul>
+		<hr>
+
+		<!-- 1.5 下拉框 -->
+		<!-- 单选下拉框 -->
+		<select name="城市" v-model="oneselect">
+			<option disabled>请选择</option>
+			<option value="shanghai">上海</option>
+			<option>苏州</option>
+			<option>南京</option>
+		</select>
+		{{oneselect}}
+		<br>
+
+		<!-- 多选下拉框 -->
+		<select name="天气" v-model="mulselect" multiple>
+			<option disabled>请选择</option>
+			<option value="qing">天气晴</option>
+			<option value="yin">天气阴</option>
+			<option>天气多云</option>
+		</select>
+		{{mulselect}}
+		<hr>
+		
+		<!-- 单选下拉框 动态渲染 -->
+		<select name="pokeman" v-model="selected">
+			<option v-for="item in dyselect" v-bind:value="item.value">{{item.text}}
+			</option>
+		</select>
+		<span>当前选中文本对应的value值: {{selected}}</span>
+		<hr>
+
+		<!-- 2.1  动态值绑定 单选按钮-->
+		<input type="radio" v-bind:value="mb" v-model="food">面包---- {{food}}
+		<br>
+
+		<!-- 2.2 动态值绑定 复选框 -->
+		<ul>
+			<li>
+				<label><input type="checkbox" name="exer1" v-model="exer" :true-value='run' :false-value='norun'>跑步</label>
+			</li>
+			<li>
+				<label><input type="checkbox" name="exer1" v-model="exer" :true-value='bask' :false-value="nobask">篮球</label>
+			</li>
+			
+			{{exer}}
+		</ul>
+		<br>
+
+		<!-- 2.3 动态绑定— 下拉框 -->
+		<select name="city" v-model="xiala">
+			<option disabled>请选择</option>
+			<option :value="{sh:'shanghai'}">上海</option>
+			<option :value="{sz: 'suzhou'}">苏州</option>
+			<option :value="{nj:'njing'}">南京</option>
+		</select>
+		{{xiala}}
+		<hr>
+
+		<!-- 3.1 修饰符 .lazy -->
+		<input type="text" v-model.lazy="lazytxt">---{{lazytxt}}
+		<br>
+
+		<input type="text" v-model.number = "num"> --- {{num}}
+
+		<input type="text" v-model.trim = "trimstr"> --- {{trimstr}}
+
+	</div>
+
+	<script src="https://cdn.bootcss.com/vue/2.6.5/vue.min.js"></script>
+
+	<script>
+		let app = new Vue({
+      el: '#app',
+      data: {
+      	msg:'',           // 单行文本
+
+      	mulmsg: '占位2',  // textarea
+
+      	oneradio: true,  // 单选按钮- 单个
+      	radiomsg: '',    // 单选按钮- 多个
+
+      	onecheck: true,  // 复选按钮- 单个
+      	mulcheck: [],    // 复选按钮- 多个
+
+      	oneselect: '',     //  下拉框— 单选
+      	mulselect: [],     // 下拉框— 多选
+
+      	selected: 'pikaqiu',			// 动态渲染 单选下拉框
+      	dyselect: [       
+      		{text:'皮卡丘', value: 'pikaqiu'},
+      		{text:'喷火龙', value: 'penhuolong'},
+      		{text:'梦幻', value: 'menghuan'},
+      	],
+
+      	// 2 值value 绑定部分
+      	food: true,
+      	mb: 'mianbao, 100个',   //单选
+
+      	exer: '',             // 复选
+      	run: 'run',
+      	norun: 'no-run',
+      	bask: 'bask',
+      	nobask: 'no-bask',
+
+      	xiala: [],     //下拉
+
+      	// 修饰符部分
+      	lazytxt: '',
+      	num: '',
+      	trimstr: ''
+      }
+     
+    })
+	</script>
+
+</body>
+</html>
+
