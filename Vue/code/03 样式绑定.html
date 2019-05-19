@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+	<meta charset="UTF-8">
+  <title>Vue的v-bind绑定样式</title>
+  <style>
+  	.right {
+  		background-color: blue;
+			padding: 5px;
+  		
+  	}
+  	.error {
+			background-color: red;
+			padding: 5px;
+  	}
+		.other {
+			margin-top: 5px;
+			background-color: greenyellow;
+			padding: 5px;
+		}
+  </style>
+</head>
+
+<body>
+	<div id="app">
+
+		<!-- 例子1 -->
+		<div>
+			<h4> 功能1 v-bind指令作用：绑定动态属性值 </h4>
+			<div> 语法为 v-bind:属性名="属性值"，其中属性值可以和vue数据关联，只要是返回字符串结果的 表达式即可 </div>
+
+			<a v-bind:href="link">点我跳转</a>
+		</div>
+		<hr>
+
+		<!-- 例子2 -->
+		<div>
+			<h4> 用对象语法绑定class</h4>
+			<div> 语法为 v-bind:class="{类名: boolean类型的数据(控制类是否存在)}"</div>
+	
+			<input type="button" value="点击切换红蓝色" :class="{right:isright, error: iserror}" @click= changecolor>
+		</div>
+		<hr>
+
+		<!-- 例子3.1 -->
+		<div>
+			<h4> 用数组语法绑定class</h4>
+			<div> 语法为 v-bind:class="[类名1, 类名2]"  (类名1/2是 data中定义的变量名)</div>
+		
+			<div :class = "[rightclass, errorclass]">用数组语法实现了class绑定</div>
+
+			<!-- 例子3.2 -->
+			<div :class = "[{right: isright}, otherclass]">数组+对象实现clas绑定，结合了数组+对象特点</div>
+		</div>
+		<hr>
+
+		<!-- 例子4 -->
+		<div>
+			<h4> 用对象语法， 绑定内联样式</h4>
+			<div> 语法为 v-bind:style="{CSS语句}" </div>
+			
+			<div :style="{color: 'pink', fontSize: '20px'}">用对象绑定style样式</div>
+		</div>
+		<hr>
+
+		<!-- 例子5 -->
+		<div>
+			<h4> class/style + 对象语法，都可以结合计算属性使用</h4>
+			<div> 语法为 v-bind:class/style = "计算属性名" </div>
+				
+			<div :class='compclass'>计算属性 + style/class对象语法示例</div>
+		</div>
+		<hr>
+	</div>
+
+
+	<script src="https://cdn.bootcss.com/vue/2.6.5/vue.js"></script>
+	<script>
+		let app = new Vue({
+      el: '#app',
+      data: {
+      	link: 'http://baidu.com',
+      	isright: true,
+      	iserror: false,
+
+      	rightclass: 'right',
+      	errorclass: 'error',
+				otherclass: 'other'
+
+      },
+
+			methods:{
+      	changecolor(){
+      		this.isright = !this.isright
+      		this.iserror = !this.iserror
+      	}
+      },
+
+      computed: {
+      	compclass(){
+      		return {
+      			right: false,
+      			error: true
+      		}
+      	}
+      },
+
+    })
+      
+   
+	</script>
+
+	
+</body>
+</html>
