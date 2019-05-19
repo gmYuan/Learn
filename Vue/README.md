@@ -13,3 +13,5 @@ Vue理论学习部分，目录见下:
 [2019.5.19 v-for指令](https://github.com/gmYuan/my_learn/blob/master/Vue/05%20vue-for%E6%8C%87%E4%BB%A4.md)
 
 [2019.5.19 is+ref特性](https://github.com/gmYuan/my_learn/blob/master/Vue/06%20is%2Bref%E7%89%B9%E6%80%A7.md)
+
+[2019.5.20 组件注册+父子组件通信]()
