@@ -9,3 +9,5 @@ Vue理论学习部分，目录见下:
 [2019.5.19 样式绑定](https://github.com/gmYuan/my_learn/blob/master/Vue/03%20%E6%A0%B7%E5%BC%8F%E7%BB%91%E5%AE%9A.md)
 
 [2019.5.19 v-if+v-show+key](https://github.com/gmYuan/my_learn/blob/master/Vue/04%20v-if%2Bv-show%2Bkey.md)
+
+[2019.5.19 v-for指令](https://github.com/gmYuan/my_learn/blob/master/Vue/05%20vue-for%E6%8C%87%E4%BB%A4.md)

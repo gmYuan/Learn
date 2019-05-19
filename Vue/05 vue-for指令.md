@@ -17,7 +17,7 @@
 
 阅读原因: 直接参考文档
 
-2 [code_ v-for指令]()
+2 [code_ v-for指令](https://github.com/gmYuan/my_learn/blob/master/Vue/code/05%20v-for%E6%8C%87%E4%BB%A4.html)
 
 阅读原因: 示例代码文件
 
@@ -29,7 +29,7 @@
 A:
 S1 参见代码示例:
 
-[vue-for指令]()
+[vue-for指令](https://github.com/gmYuan/my_learn/blob/master/Vue/code/05%20v-for%E6%8C%87%E4%BB%A4.html)
 
 
 ## <span id="3">3 v-for + key使用 </span>
@@ -77,7 +77,7 @@ S1 直接通过下标修改数组值，不会检测数据修改
 S2 直接通过length修改数组长度，vue不会检测修改
 
 
-S3 解决方法是: vue.set / splice方法，具体代码参见 [v-for 例5]()
+S3 解决方法是: vue.set / splice方法，具体代码参见 [v-for 例5](https://github.com/gmYuan/my_learn/blob/master/Vue/code/05%20v-for%E6%8C%87%E4%BB%A4.html)
 
 
 2 v-for还有哪些使用方法:
