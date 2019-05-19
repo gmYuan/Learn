@@ -18,7 +18,7 @@
 
 阅读原因: 直接参考文档
 
-2 [code_ is+ref特性]()
+2 [code_ is+ref特性](https://github.com/gmYuan/my_learn/blob/master/Vue/code/06%20is%2Bref%E7%89%B9%E6%80%A7.html)
 
 阅读原因: 示例代码文件
 
@@ -67,4 +67,4 @@ S1 定义子组件相关信息，在父组件中使用子组件: `<one-num @chan
 
 S2 子组件实例的ref信息，都可在父组件的 $refs中读取到，从而获取该子组件的所有信息
 
-具体代码，可参考 [is+ref特性— 例2]()
+具体代码，可参考 [is+ref特性— 例2](https://github.com/gmYuan/my_learn/blob/master/Vue/code/06%20is%2Bref%E7%89%B9%E6%80%A7.html)
