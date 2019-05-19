@@ -23,7 +23,9 @@
 1 Q: v-if使用方法
 
 A:
-S1 参见代码示例: [vue-if+v-show+key]()
+S1 参见代码示例: 
+
+[vue-if+v-show+key](https://github.com/gmYuan/my_learn/blob/master/Vue/code/04%20v-if%2Bv-show%2Bkey.html)
 
 
 2 Q: v-if使用的注意点是什么
