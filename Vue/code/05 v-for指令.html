@@ -80,7 +80,7 @@
 				<h4> vue.set/vm.$set 的使用 </h4>
 					
 				<ul>
-					<li v-for="item in price">{{item}}</li>
+					<li v-for="(item, index) in price" :key="index">{{item}}</li>
 				</ul>
 	
 				<input type="button" value="点击改变数组" @click="changePrice">
@@ -147,9 +147,10 @@
 				// 例5对应方法
 				changePrice() {
 					this.price[2] = 444,   // 直接通过下标修改数组值，不会检测数据修改
-					this.price.length = 1  // 直接通过length修改数组长度，vue不会检测修改
+					//this.price.length = 1  // 直接通过length修改数组长度，vue不会检测修改
 
-					Vue.set(this.price, 2, 444)
+					console.log(app === this)   //true
+					Vue.set(this.price, 1, 345)
 				}	
 			}
 			
