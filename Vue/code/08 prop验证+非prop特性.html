@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+	<meta charset="UTF-8">
+	<title>prop验证 + 非prop特性</title>
+
+	<style>
+		/* reset部分 */
+		h4 {
+			padding:0;
+			margin: 0;
+		}
+		.gram {
+			padding-bottom: 20px;
+		}
+		
+
+	</style>
+
+</head>
+
+<body>
+	<div id="app">
+
+		<!-- 例1 -->
+		<div>
+			<h4> prop验证: 多个可传类型 + 默认值 + 必须项 </h4>
+			<div class="gram"> 语法:  propA: { type: String, required: true, default: 100} </div>
+
+			<one-component :onedata="onedata"></one-component>	
+
+		</div>
+		<hr>
+
+		<!-- 例2 -->
+		<div>
+			<h4> prop验证: 自定义验证函数，用于验证子组件接收的数据是否可以通过  </h4>
+			<div class="gram"> 语法: 	propA: { validator: function(){..} } </div>
+	
+			<sec-component :secdata="secdata"></sec-component>
+		</div>
+		<hr>
+
+	</div>
+
+	
+	<script src="https://cdn.bootcss.com/vue/2.6.5/vue.js"></script>
+
+	<script>
+		
+		let app = new Vue({
+			el: '#app',
+			data: {
+				//例1数据
+				onedata: 520,
+
+				//例2数据
+				secdata: [15, 24, 36]
+
+			},
+
+			components: {
+				//例1组件
+				'one-component': {
+					props: {
+						onedata: {
+							type: [String, Number],
+							default: 'hello',
+							required: true,
+						}
+					},
+					template: '<div>我从父组件获取的数据是{{onedata}}, 我是必传项+默认值是hello+ 数字/字符类型即可</div>',
+
+				},
+
+				//例2组件
+				'sec-component': {
+					props: {
+						secdata: {
+							type: Array,
+							validator: function(value){   //value表示传入的数据，这里是一个数组
+								return Array.isArray(value)
+							}
+
+						}
+					},
+
+					template: '<div>从父组件获取的数据是 [15, 24, 36], 我对它们进行了验证，它通过了验证，所以显示出了{{secdata}}</div>',
+				}
+				
+			}
+			
+		})
+	</script>
+
+</body>
+
+</html>
+
