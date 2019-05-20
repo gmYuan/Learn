@@ -15,3 +15,5 @@ Vue理论学习部分，目录见下:
 [2019.5.19 is+ref特性](https://github.com/gmYuan/my_learn/blob/master/Vue/06%20is%2Bref%E7%89%B9%E6%80%A7.md)
 
 [2019.5.20 组件注册+父子组件通信](https://github.com/gmYuan/my_learn/blob/master/Vue/07%20%E7%BB%84%E4%BB%B6%E6%B3%A8%E5%86%8C%2B%E7%88%B6%E5%AD%90%E7%BB%84%E4%BB%B6%E9%80%9A%E4%BF%A1.md)
+
+[2019.5.20 props验证 + 非prop特性](https://github.com/gmYuan/my_learn/blob/master/Vue/08%20prop%E9%AA%8C%E8%AF%81%2B%E9%9D%9Eprop%E7%89%B9%E6%80%A7.md)

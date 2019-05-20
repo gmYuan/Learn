@@ -15,7 +15,7 @@
 
 阅读原因: 直接参考文档
 
-2 [prop验证 + 非prop特性]()
+2 [prop验证 + 非prop特性](https://github.com/gmYuan/my_learn/blob/master/Vue/code/08%20prop%E9%AA%8C%E8%AF%81%2B%E9%9D%9Eprop%E7%89%B9%E6%80%A7.html)
 
 阅读原因: 示例代码文件
 
