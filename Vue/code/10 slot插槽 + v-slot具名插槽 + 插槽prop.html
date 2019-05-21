@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+	<meta charset="UTF-8">
+	<title>slot插槽 + v-slot具名插槽 + 插槽prop </title>
+
+	<style>
+		/* reset部分 */
+		h4 {
+			padding:0;
+			margin: 0;
+		}
+		.gram {
+			padding-bottom: 20px;
+		}
+		
+
+	</style>
+
+</head>
+
+<body>
+	<div id="app">
+
+		<!-- 例1 -->
+		<div>
+			<h4> 插槽: A组件向B组件传递 html元素 </h4>
+			<div class="gram"> 语法: A中使用B组件标签 + B组件内部使用slot占位 </div>
+
+			<a-child>
+				<!-- <p>我通过slot,向a-child组件传入内容咧~~</p> -->
+			</a-child>
+		</div>
+		<hr>
+
+		<!-- 例2 -->
+		<div>
+			<h4> 具名插槽: A组件向B组件传递 多段html元素 </h4>
+			<div class="gram"> 语法: A中使用B组件标签&template+v-slot + B组件内部使用slot占位 </div>
+
+			<b-child>
+				<template v-slot:header>
+					<button>我是header部分的实际传入内容</button>
+				</template>
+
+				<template v-slot:footer>
+					<button>我是footer部分的实际传入内容</button>
+				</template>
+
+				<template v-slot:default>
+					<button>我是main部分的实际传入内容</button>
+				</template>
+			</b-child>
+		</div>
+		<hr>
+
+		<!-- 例3 -->
+		<div>
+			<h4> 插槽prop: 能够在组件标签作用域中使用  组件内部作用域的数据 </h4>
+			<div class="gram"> 语法: A中使用B组件标签 & template+v-slot:插槽名="作用域名" + B组件内部的slot使用:bind </div>
+
+			<c-child>
+				<template v-slot:header="childtemp">
+					<p>我获取到了子组件的template数据:</p>
+					<p>名称是: {{childtemp.person.name}}</p>
+					<p>age是: {{childtemp.person.age}}</p>
+				</template>
+
+			
+			</c-child>
+		</div>
+		<hr>
+
+		
+
+	</div>
+
+	
+	<script src="https://cdn.bootcss.com/vue/2.6.5/vue.js"></script>
+
+	<script>
+
+		
+		let app = new Vue({
+			el: '#app',
+			components: {
+				// 例1组件
+      	'a-child': {
+      		template: `
+      		  <div>
+      		    <slot>
+      		    	我是a-child默认插槽内容，如果使用组件时没有传入内容， 就显示我~~
+      		    </slot>
+      		  </div>
+      		`
+      	},
+
+				// 例2组件
+				'b-child': {
+      		template: `
+						<div>
+							<header>
+								<slot name="header"></slot>
+							</header>
+							<main>
+								<slot></slot>
+							</main>
+							<footer>
+								<slot name="footer"></slot>
+							</footer>
+						</div>
+      		`
+      	},
+
+				// 例3组件
+				'c-child': {
+      		data(){
+      			return {
+      				person: {
+      					name: 'star',
+      					age: 22
+      				}
+      			}
+      		},
+      		template: `
+						<div>
+							<header>
+								<slot name='header' :person="person">{{person.name}}</slot>
+							</header>
+						</div>
+      		`
+      	},
+
+      },
+			
+	})
+	</script>
+
+</body>
+
+</html>
+
