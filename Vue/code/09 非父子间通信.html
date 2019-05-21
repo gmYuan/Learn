@@ -26,24 +26,15 @@
 		<!-- 例1 -->
 		<div>
 			<h4> a组件修改b组件的数据值 </h4>
-			<div class="gram"> 语法:  </div>
+			<div class="gram"> 语法: bus原型对象 + mounted监听 </div>
 
 			<a-component></a-component>
 			<b-component></b-component>
 
-			
-
 		</div>
 		<hr>
 
-		<!-- 例2 -->
-		<!-- <div>
-			<h4> prop验证: 自定义验证函数，用于验证子组件接收的数据是否可以通过  </h4>
-			<div class="gram"> 语法: 	propA: { validator: function(){..} } </div>
-	
-			<sec-component :secdata="secdata"></sec-component>
-		</div>
-		<hr> -->
+		
 
 	</div>
 
@@ -52,7 +43,7 @@
 
 	<script>
 
-		Vue.prototype.bus = new Vue()  //S1 在Vue原型上创建一个vue实例，从而可以使用所有vue实例方法
+		Vue.prototype.bus = new Vue()  //S1 Vue原型上创建一个实例，从而所有组件都可以使用 所有vue实例方法
 		
 		let app = new Vue({
 			el: '#app',
@@ -65,8 +56,18 @@
       				total: 4120,
       			}
       		},
-      		template: ` <div>我是a组件里的值-- {{total}}</div>`
+      		template: ` <div>我是a组件里的值-- {{total}}</div>`,
+
+      		methods: {
+      			bechanged(value){
+      				this.total = value
+      			}
+      		},
+      		mounted(){
+      			this.bus.$on('b-change-a', this.bechanged)
+      		},
       	},
+      	
 
 				'b-component': {
       		data(){
@@ -75,7 +76,13 @@
       				msg: '我是b子组件的数据'
       			}
       		},
-      		template: `<button @click="change">我是b组件按钮，我的值是{{total2}}---点击我可以改变a组件的值</button>`,
+      		template: `<button @click="change">我是b组件按钮，我的值是{{total2}}---点击我可以让a组件的值变成和我一样</button>`,
+
+      		methods: {
+      			change(){
+      				this.bus.$emit('b-change-a', this.total2)
+      			}
+      		},
       		
 			}
 		
