@@ -17,7 +17,7 @@
 
 阅读原因: 介绍了插槽的使用方法
 
-2 [slot插槽 + v-slot具名插槽 + 插槽prop]()
+2 [slot插槽 + v-slot具名插槽 + 插槽prop](https://github.com/gmYuan/my_learn/tree/master/Vue/code)
 
 阅读原因: 示例代码文件
 
@@ -58,10 +58,3 @@ S1 因为在A组件文件中，使用B组件html标签时，所在的作用域�
 S2 但有时，我们希望传入的html文本内容中，可以使用到B组件的数据
 
 S3 这时候，就可以在B组件的slot中，用v-bind绑定一个自定义属性,属性值是B组件要传出的数据 + 绑定到一个自定义的作用域中
-
-
-
-
-
-
-
