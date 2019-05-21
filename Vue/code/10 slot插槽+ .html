@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+	<meta charset="UTF-8">
+	<title>slot插槽+ </title>
+
+	<style>
+		/* reset部分 */
+		h4 {
+			padding:0;
+			margin: 0;
+		}
+		.gram {
+			padding-bottom: 20px;
+		}
+		
+
+	</style>
+
+</head>
+
+<body>
+	<div id="app">
+
+		<!-- 例1 -->
+		<div>
+			<h4> A组件向B组件传递 html元素 </h4>
+			<div class="gram"> 语法: A中使用B组件标签 + B组件内部使用slot占位 </div>
+
+			<a-child>
+				<!-- <p>我通过slot,向a-child组件传入内容咧~~</p> -->
+			</a-child>
+
+
+			
+		</div>
+		<hr>
+
+		
+
+	</div>
+
+	
+	<script src="https://cdn.bootcss.com/vue/2.6.5/vue.js"></script>
+
+	<script>
+
+		
+		let app = new Vue({
+			el: '#app',
+			components: {
+      	'a-child': {
+      		template: `
+      		  <div>
+      		    <slot>
+      		    	我是a-child默认插槽内容，如果使用组件时没有传入内容， 就显示我~~
+      		    </slot>
+      		  </div>
+      		`
+      	},
+
+
+      },
+			
+	})
+	</script>
+
+</body>
+
+</html>
+
