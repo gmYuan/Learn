@@ -1,4 +1,4 @@
-﻿# 动态组件is+v-once
+# 动态组件is+v-once
 
 目录:
 
@@ -17,7 +17,7 @@
 
 阅读原因: 直接参考文档
 
-2 [动态组件is + v-once]()
+2 [动态组件is + v-once](https://github.com/gmYuan/my_learn/blob/master/Vue/code/11%20%E5%8A%A8%E6%80%81%E7%BB%84%E4%BB%B6is%2Bv-once.html)
 
 阅读原因: 示例代码文件
 

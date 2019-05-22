@@ -21,3 +21,5 @@ Vue理论学习部分，目录见下:
 2019.5.21 [非父子组件通信](https://github.com/gmYuan/my_learn/blob/master/Vue/09%20%E9%9D%9E%E7%88%B6%E5%AD%90%E9%97%B4%E9%80%9A%E4%BF%A1.md)
 
 2019.5.22 [slot插槽 + v-slot具名插槽 + 插槽prop](https://github.com/gmYuan/my_learn/blob/master/Vue/10%20slot%E6%8F%92%E6%A7%BD%20%2B%20v-slot%E5%85%B7%E5%90%8D%E6%8F%92%E6%A7%BD%20%2B%20%E6%8F%92%E6%A7%BDprop.md)
+
+2019.5.22 [动态组件is + v-once](https://github.com/gmYuan/my_learn/blob/master/Vue/11%E5%8A%A8%E6%80%81%E7%BB%84%E4%BB%B6is%2Bv-once.md)
