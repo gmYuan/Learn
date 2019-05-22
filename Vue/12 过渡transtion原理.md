@@ -15,7 +15,7 @@
 
 阅读原因: 直接参考文档
 
-2 [过渡transtion原理]()
+2 [过渡transtion原理](https://github.com/gmYuan/my_learn/blob/master/Vue/code/12%20%E8%BF%87%E6%B8%A1transtion%E5%8E%9F%E7%90%86.html)
 
 阅读原因: 示例代码文件
 

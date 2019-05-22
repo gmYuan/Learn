@@ -23,3 +23,5 @@ Vue理论学习部分，目录见下:
 2019.5.22 [slot插槽 + v-slot具名插槽 + 插槽prop](https://github.com/gmYuan/my_learn/blob/master/Vue/10%20slot%E6%8F%92%E6%A7%BD%20%2B%20v-slot%E5%85%B7%E5%90%8D%E6%8F%92%E6%A7%BD%20%2B%20%E6%8F%92%E6%A7%BDprop.md)
 
 2019.5.22 [动态组件is + v-once](https://github.com/gmYuan/my_learn/blob/master/Vue/11%E5%8A%A8%E6%80%81%E7%BB%84%E4%BB%B6is%2Bv-once.md)
+
+2019.5.23 [过渡transtion原理](https://github.com/gmYuan/my_learn/blob/master/Vue/12%20%E8%BF%87%E6%B8%A1transtion%E5%8E%9F%E7%90%86.md)
