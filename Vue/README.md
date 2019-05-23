@@ -26,4 +26,6 @@ Vue理论学习部分，目录见下:
 
 2019.5.23 [过渡transtion原理](https://github.com/gmYuan/my_learn/blob/master/Vue/12%20%E8%BF%87%E6%B8%A1transtion%E5%8E%9F%E7%90%86.md)
 
-2019.5.23 [transtion的appear+type+duration和animition](https://github.com/gmYuan/my_learn/blob/master/Vue/13%20transtion%E7%9A%84appear%2Btype%2Bduration%E5%92%8Canimition.md)
+2019.5.23 [transtion函数控制](https://github.com/gmYuan/my_learn/blob/master/Vue/14%20transtion%E5%87%BD%E6%95%B0%E6%8E%A7%E5%88%B6.html)
+
+2019.5.23 [多个元素+组件间的切换 添加过渡效果](https://github.com/gmYuan/my_learn/blob/master/Vue/15%20%E5%A4%9A%E4%B8%AA%E5%85%83%E7%B4%A0%2B%E7%BB%84%E4%BB%B6%E9%97%B4%E7%9A%84%E5%88%87%E6%8D%A2%20%E6%B7%BB%E5%8A%A0%E8%BF%87%E6%B8%A1%E6%95%88%E6%9E%9C.html)
