@@ -25,3 +25,5 @@ Vue理论学习部分，目录见下:
 2019.5.22 [动态组件is + v-once](https://github.com/gmYuan/my_learn/blob/master/Vue/11%E5%8A%A8%E6%80%81%E7%BB%84%E4%BB%B6is%2Bv-once.md)
 
 2019.5.23 [过渡transtion原理](https://github.com/gmYuan/my_learn/blob/master/Vue/12%20%E8%BF%87%E6%B8%A1transtion%E5%8E%9F%E7%90%86.md)
+
+2019.5.23 [transtion的appear+type+duration和animition](https://github.com/gmYuan/my_learn/blob/master/Vue/13%20transtion%E7%9A%84appear%2Btype%2Bduration%E5%92%8Canimition.md)

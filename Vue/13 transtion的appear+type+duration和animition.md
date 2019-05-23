@@ -13,7 +13,7 @@
 
 阅读原因: 直接参考文档
 
-2 [transtion的appear+type+duration和animition]()
+2 [transtion的appear+type+duration和animition](https://github.com/gmYuan/my_learn/blob/master/Vue/code/13%20transtion%E7%9A%84appear%2Btype%2Bduration%E5%92%8Canimition.html)
 
 阅读原因: 示例代码文件
 
