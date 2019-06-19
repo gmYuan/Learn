@@ -11,7 +11,6 @@
 4 [绝对居中](#4)
 
 
-
 ## <span id="1"> 1 预读文档 </span>
 
 阅读文档
@@ -24,7 +23,6 @@
 2 [16种方法实现水平居中垂直居中](https://juejin.im/post/58f818bbb123db006233ab2a)
 
 阅读原因: 水平和垂直居中的方法介绍
-
 
 
 ## <span id="2"> 2 水平居中 </span>
@@ -45,7 +43,6 @@ S2 方法2: flex + justify-content
 S3 方法3: 固定宽度 + 绝对定位 + margin-left负值 
 
 S4 方法4: 绝对定位 + `transform:translate(-50%,0)`
-
 
 
 ## <span id="3"> 3 垂直居中 </span>
