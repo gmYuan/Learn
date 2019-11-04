@@ -70,7 +70,7 @@ Function.prototype.bind2 = function(ctx) {
 
   let fBind = function() {
     let args2 = Array.prototype.slice.call(arguments)   // 内部的arguments 和外层的不是同一个对象
-    return self.call(this instanceof fBind ? this : ctx, args1.concat(args2))  // new调用时，函数this指向实例
+    return self.apply(this instanceof fBind ? this : ctx, args1.concat(args2))  // new调用时，函数this指向实例
   }
 
   let fNOP = function() {}
