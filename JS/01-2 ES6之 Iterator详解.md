@@ -1,0 +1,156 @@
+# ES6之 Iterator详解
+
+目录:
+
+1 [预读文档](#1)
+
+2 [迭代器](#2)
+
+3 [for...of实现](#3)
+
+
+## <span id="1"> 1 预读文档 </span>
+
+1 [深入理解 Es6 Iterator](https://juejin.im/post/5dfcbc8c6fb9a0165e33172c#heading-20)
+
+2 [Iterator 和 for...of 循环](http://es6.ruanyifeng.com/#docs/iterator)
+
+阅读原因: 第2部分 直接参考文档
+
+
+3 [ES6 系列之迭代器与 for of](https://github.com/mqyqingfeng/Blog/issues/90)
+
+阅读原因: 第3部分 直接参考文档
+
+
+## <span id="2"> 2 迭代器 </span>
+
+1 Q: 什么是迭代器(Iterator), 有什么作用
+
+A:
+
+A1 迭代器: 具有next()方法的对象 + next()返回一个 具有value和done属性的 对象
+
+A2 迭代器的作用是: 1. 为不同数据结构 提供统一的 数据访问方式;  2. for循环的语法过于复杂
+
+用代码表示迭代器为:
+
+```js
+function createIterator(items) {
+  let i = 0
+  return {
+    next() {
+      let done = (i >= items.length)
+      let value = (done ? undefined : items[i++])
+      return {
+        value,
+        done
+      }
+    }
+  }
+}
+
+let iterator = createIterator([1, 2, 3])
+console.log(iterator.next())          // "{ value: 1, done: false }"
+console.log(iterator.next())         // "{ value: 2, done: false }"
+console.log(iterator.next())         // "{ value: 3, done: false }"
+console.log(iterator.next())        // "{ value: undefined, done: true }"
+// 之后的所有调用
+console.log(iterator.next())       // "{ value: undefined, done: true }"
+```
+
+2 Q: 什么是可迭代对象(Iterable), 它有什么特点
+
+A: S1 在JS中, 只要一个对象A部署了[symbol.itetaor]方法 + 该方法返回的是Iterator, 那么对象A就是一个 可迭代对象
+
+S2 可迭代对象的特点是: 可以通过`for...of语法` 访问其对象的内部数据
+
+示例代码为:
+
+```js
+class RangeIterator {
+  constructor(start, stop) {
+    this.value = start;
+    this.stop = stop;
+  }
+
+  [Symbol.iterator]() { return this; }      // new调用时,原型链上this指向实例对象 + 具有next()方法
+
+  next() {
+    var value = this.value;
+    if (value < this.stop) {
+      this.value++;
+      return {done: false, value: value};
+    }
+    return {done: true, value: undefined};
+  }
+}
+
+function range(start, stop) {
+  return new RangeIterator(start, stop);
+}
+
+
+for (var value of range(0, 3)) {
+  console.log(value);             // 0, 1, 2
+}
+```
+
+3 Q: 有哪些语法操作会默认调用 迭代器next()方法
+
+A: 解构赋值 / 扩展运算符 / for...of / Array.from() / yield* 等
+
+
+4 Q: 迭代器对象除了next()方法，还能有哪些方法
+
+A: 还可以有 `return()方法` + `throw方法`
+
+retrun()方法在 遍历迭代器过程中 中止(break) / 报错(throw Error)时, 就会调用return方法 + return方法要返回一个对象
+
+```js
+function readFile(file) {
+  [Symbol.iterator]() {
+
+    return {
+      next() {
+        return {done: false}
+      }
+      // 迭代器对象的return方法
+      return() {
+        return {done: true}
+      }
+    }
+
+  }
+}
+```
+
+
+## <span id="3"> 3 for...of实现 </span>
+
+1 Q: 模拟实现for...of的过程
+
+A: S1 可迭代对象判断 + 回调函数判断
+
+S2 自动调用 对象的迭代器方法 + 依次执行 next方法
+
+```JS
+function forOf(obj, cb) {
+  let _iterator, _step
+
+  if (typeof obj[Symbol.iterator] !== 'function') {
+    throw new TypeError(obj + 'is not iterable')
+  }
+  if (typeof cb !== 'function') {
+    throw new TypeError('cb must be callable')
+  }
+
+  _iterator = obj[Symbol.iterator]()
+  _step = _iterator.next()
+
+  while (!_step.done) {
+    cb(_step.value)
+    _step = _iterator.next()
+  }
+}
+```
