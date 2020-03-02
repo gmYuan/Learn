@@ -1,236 +1,141 @@
-# ES6之 生成器 详解
+# ES6之 generator详解
 
 目录:
 
 1 [预读文档](#1)
 
-2 [生成器基本概念](#2)
+2 [生成器 使用特性](#2)
 
-3 [生成器常见使用](#3)
+3 [生成器 自动执行](#3)
 
 
 ## <span id="1"> 1 预读文档 </span>
 
-1 [深入理解ES6](https://legacy.gitbook.com/book/oshotokill/understandinges6-simplified-chinese/details)
+1 [Generator 函数的语法](http://es6.ruanyifeng.com/#docs/generator)
 
-2 [Generator 函数的语法](http://es6.ruanyifeng.com/#docs/generator)
-
-3 [ES6 系列之 Generator 的自动执行](https://github.com/mqyqingfeng/Blog/issues/99)
+2 [ES6 系列之 Generator 的自动执行](https://github.com/mqyqingfeng/Blog/issues/99)
 
 阅读原因: 直接参考文档
 
 
-## <span id="2"> 2 生成器基本概念 </span>
+## <span id="2"> 2 生成器 使用特性 </span>
 
 1 Q: 什么是生成器, 有什么作用
 
-A: S1 生成器是 return迭代器对象的特殊函数 + 内部用yield表达式来 返回迭代器的 当前状态
+A: S1 Generator 是一个可以 返回迭代器的 特殊函数，它可以用来 控制异步流程;
+
+S2 通过 yield关键字+next()方法 来控制 生成器的状态切换;
+
+
+
+2 Q: generator使用特性 有哪些
+
+A: S1 返回的是 一个迭代器对象g: { next() {value: xxx, done: xxx } } ==> for..of/扩展运算符
+
+S2 g.next(p1)每次都会执行内代码 直到yield语句处 + p1参数值就是yield语句返回值
+
+S3 g.throw(xx)的报错 可以被内外 try...catch语句捕获到
+
+S4 g.return(xx) 会让 迭代器终止
+
+S5 yield* YYY 相当于 for..of遍历执行YYY里的 [Symbol.Iterator]接口
+
+
+## <span id="3"> 3生成器 自动执行 </span>
+
+1 Q: 如何让 生成器可以自动执行 异步流程
+
+A: S1 方法一: 基于Promise的 Generator自动执行器:
 
 ```js
-function* foo() {
-  yield 1
-  yield 2
-  yield 3
-  yield 4
-  yield 5
-  return 6
-}
+function run(generator) {
+  let gen = generator()  //S1 启动迭代器
 
-for (let v of foo()) {
-  console.log(v)          // 1 2 3 4 5
-}
+  function next(data) {
+    let ret = gen.next(data)    //S2 返回的是迭代器 {value: Promsie对象,  done: xxx}
 
-// S1 temp = foo(), temp = { next: {xxx}, [Symbol.iterator] = temp }
+    if (ret.done) return;
 
-// S2 for..of自动调用  temp[Symbol.iterator](), 且 temp[Symbol.iterator]() === temp 为true  +  temp = { next: {xxx}, }
+    ret.value.then(function(data) {  // S3 data是上一次yield的 异步操作的  返回值
+      next(data)  // 把值传入生成器内部，再次调用 gen.next(), 执行到下一次的 yield语句暂停处
+    })
 
-// S3 for..of自动调用 next()生成   {value: xxx, done: xxx}
-
-// S4 yieldA 会自动在调用next()时，把A传入返回的{value: A, done: hasNoyield}
-```
-
-
-2 Q: yield表达式的作用是什么
-
-A: S1 yield 返回当前迭代器的状态值，状态值就是`yield A`中的 A;
-
-S2 `yield A`语句默认返回的值是undefined, 可以通过next(C),把C赋值给 `上一个yield表达式的返回值`
-
-S3 每次执行next(),都会在yield出暂停，再次执行时从暂停出再继续
-
-代码举例:
-
-```js
-function* f() {
-  for(var i = 0; true; i++) {
-    var reset = yield i;
-    if(reset) { i = -1; }
   }
+
+  next()
+
 }
-
-var g = f();
-
-g.next()       // { value: 0, done: false }
-g.next()       // { value: 1, done: false }
-g.next(true)  // { value: 0, done: false },  因为ture被赋值给 上一次的yiled表达式返回值了
 ```
 
-
-3 Q: 如何理解 生成器的throw方法
-
-A: S1 生成器函数G返回的 迭代器对象i，具有`i.throw()方法`, 可以监测G函数内部程序是否报错
-
-S2 G内部的try..catch只能捕获一次i.throw()抛出的错误，如果继续抛出错误，可被G函数内外 设置的 `try...catch`语句捕获;
-
-若都没有 + 发生错误时, 程序会停止运行(即 `error被catch捕获的冒泡性`)
+S2 方法二: 基于Thunk函数的 Generator自动执行器
 
 ```js
-var g = function* () {
-  try {
-    yield
-  } catch (e) {
-    console.log('内部捕获', e)
+
+function run(generator) {
+  let gen = generator()  //S1 启动迭代器
+
+  function next(data) {
+    let ret = gen.next(data)    //S2 返回的是迭代器 {value: Thunk函数,  done: xxx}
+
+    if (ret.done) return;
+  
+    ret.value(next)  // S3 next接收的data参数, 就是上一次的 异步执行的结果
   }
-};
 
-var i = g()
-i.next()
+  next()
 
-try {
-  i.throw('a')
-  i.throw('b')
-} catch (e) {
-  console.log('外部捕获', e)
-}
-
-// 内部捕获 a
-// 外部捕获 b
-```
-
-
-4 Q: 如何理解 生成器的return方法
-
-A: S1 `g.return(p1)`会终止迭代器的迭代过程，直接状态变成`{value: p1, done: true}`
-
-```js
-function* gen() {
-  yield 1
-  yield 2
-  yield 3
-}
-
-var g = gen();
-
-g.next()          // { value: 1, done: false }
-g.return('foo')   // { value: "foo", done: true }
-g.next()         // { value: undefined, done: true }
-```
-
-
-5 Q: yield* 表达式有什么作用
-
-A: 在 A生成器中 执行B生成器的 迭代器 + 加入B中的yield语句到A中
-
-S2 本质上, yield* 是 `for..of在 生成器C生成的迭代器D 中自动调用next()方法的 + 返回_step().value` 语法糖
-
-```js
-function* bar() {
-  yield 'x'
-  yield* foo()
-  yield 'y'
-}
-
-// 本质上 等同于
-function* bar() {
-  yield 'x'
-  for (let v of foo()) {
-    yield v
-  }
-  yield 'y'
-}
-
-
-for (let v of bar()){
-  console.log(v)        // "x", "a", "b", "y"
 }
 ```
 
-
-## <span id="3"> 3 生成器常见使用 </span>
-
-
-1 Q: generator有哪些常见运用
-
-A: 最大的作用是 对异步操作进行封装
-
-S1 生成器可以像写同步代码一样书写 异步操作:
-
-```js
-function* gen(url){
-  let res = yield fetch(url)   // fetch返回的是一个Promise对象
-  console.log(res.name)
-}
-```
-
-S2 但是执行函数时，还是需要`手动调用g.next()方法 + 嵌套使用Promise.then()方法`, 所以书写很不直观:
-
-```js
-let g = gen('url.do')
-let result = g.next()
-
-result.value.then( (data) => {
-  return data.json()
-}).then( (data) => {
-  g.next(data)      // 手动调用next()
-})
-```
-
-S3 使用回调/promise 实现自动执行generator的函数, 本质是 `通过promise状态 来自动接收 g返回的执行权`
+S3 方法三: Co通用版本的 Generator自动执行器
 
 ```js
 
 function run(gen) {
-  let gen = gen()     // S1 执行生成器获取 迭代器对象
+  let gen = gen()   // S1 启动生成器, 返回一个迭代器对象 {next() {...} }
 
-  return new Promise((resolve, reject) => {   // S2 返回的是一个promise对象
-
+  return new Promise(function(resolve, reject) {  // S1 返回一个Promsie: 可以使后续获取到 gen的结果值
     function next(data) {
-      try {
-        var result = gen.next(data)  //S3 调用next()方法更新 状态值, 返回值为 {value: xxx, done: xxx}
+      try {  // S2 错误捕获, 防止yield处 的异步操作 执行错误
+        let ret = gen.next(data)  // S3 ret是 当前状态:  {value: Promise/Thunk函数, done: xxx}
       } catch (e) {
         return reject(e)
       }
 
-      if (result.done) {return resolve(result.value)}   //S4 迭代器状态结束时: 返回值 + 结束递归调用
+      if (ret.done) return resolve(ret.value)
 
-      let value = toPromise(result.value)   //S5 让当前状态值 必然是一个promise对象
-      value.then( data => {next(data)} , e => rejext(e) )    // S6 data其实就是value
+
+      let value = toPromise(ret.value)  //S4 把ret.value 必然转化为一个 Promise对象
+
+      value.then(
+        function(data) { next(data) },  //S5 递归调用 gen.next()
+        function(e) {reject(e)}
+      )
     }
 
     next()
+
   })
-}
 
-
-
-function toPromise(obj) {
-    if (isPromise(obj)) return obj
-    if ('function' == typeof obj) return thunkToPromise(obj)
-    return obj
 }
 
 function isPromise(obj) {
-    return 'function' == typeof obj.then
+  return 'function' == typeof obj.then;
+}
+
+function toPromise(obj) {
+  if (isPromise(obj)) return obj;
+  if ('function' == typeof obj) return thunkToPromise(obj);
+  return obj;
 }
 
 function thunkToPromise(fn) {
-    return new Promise(function(resolve, reject) {
-        fn(function(err, res) {
-            if (err) return reject(err)
-            resolve(res)
-        })
+  return new Promise(function(resolve, reject) {
+    fn(function(err, res) {
+      if (err) return reject(err);
+      resolve(res);
     })
-}
 
-module.exports = run;
+  })
+}
 ```

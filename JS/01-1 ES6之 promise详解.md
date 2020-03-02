@@ -46,7 +46,7 @@ function Promise(executor) {
 
   function resolve(value) {
     // 防止调用多次不同状态
-    if (self.status !== PENDING) {
+    if (self.status === PENDING) {
       self.status = RESOLVED
       self.value = value
       self.onResolvedCallbacks.forEach(fn => fn())
@@ -54,7 +54,7 @@ function Promise(executor) {
   }
 
   function reject(reason) {
-    if (self.status !== PENDING) {
+    if (self.status === PENDING) {
       self.status = REJECTED
       self.reason = reason
       self.onRejectedCallbacks.forEach(fn => fn())
