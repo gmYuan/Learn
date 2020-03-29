@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Vue之 组件通信详解 | Ygm的博客</title>
+    <meta name="description" content="前端学习">
+    <meta name="generator" content="VuePress 1.3.1">
+    
+    
+    <link rel="preload" href="/my_learn/assets/css/0.styles.d157d8f1.css" as="style"><link rel="preload" href="/my_learn/assets/js/app.3ea49b25.js" as="script"><link rel="preload" href="/my_learn/assets/js/2.8ecdc4bf.js" as="script"><link rel="preload" href="/my_learn/assets/js/25.bdf87c09.js" as="script"><link rel="prefetch" href="/my_learn/assets/js/10.37afb546.js"><link rel="prefetch" href="/my_learn/assets/js/11.117681fa.js"><link rel="prefetch" href="/my_learn/assets/js/12.52efb4c4.js"><link rel="prefetch" href="/my_learn/assets/js/13.beb693cf.js"><link rel="prefetch" href="/my_learn/assets/js/14.11bf1e2b.js"><link rel="prefetch" href="/my_learn/assets/js/15.68d70280.js"><link rel="prefetch" href="/my_learn/assets/js/16.fdc36850.js"><link rel="prefetch" href="/my_learn/assets/js/17.a1d02956.js"><link rel="prefetch" href="/my_learn/assets/js/18.d47e8f01.js"><link rel="prefetch" href="/my_learn/assets/js/19.d35ec879.js"><link rel="prefetch" href="/my_learn/assets/js/20.656b275b.js"><link rel="prefetch" href="/my_learn/assets/js/21.ae394a19.js"><link rel="prefetch" href="/my_learn/assets/js/22.852b9c1e.js"><link rel="prefetch" href="/my_learn/assets/js/23.e6628bca.js"><link rel="prefetch" href="/my_learn/assets/js/24.d396eb25.js"><link rel="prefetch" href="/my_learn/assets/js/26.705b13c0.js"><link rel="prefetch" href="/my_learn/assets/js/27.b3a897a5.js"><link rel="prefetch" href="/my_learn/assets/js/28.5a3d4fb3.js"><link rel="prefetch" href="/my_learn/assets/js/29.186610e5.js"><link rel="prefetch" href="/my_learn/assets/js/3.560b90ed.js"><link rel="prefetch" href="/my_learn/assets/js/4.b2c0328d.js"><link rel="prefetch" href="/my_learn/assets/js/5.ad9d7d87.js"><link rel="prefetch" href="/my_learn/assets/js/6.9ebd85a9.js"><link rel="prefetch" href="/my_learn/assets/js/7.a196bf9f.js"><link rel="prefetch" href="/my_learn/assets/js/8.841ab6c0.js"><link rel="prefetch" href="/my_learn/assets/js/9.29813a80.js">
+    <link rel="stylesheet" href="/my_learn/assets/css/0.styles.d157d8f1.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/my_learn/" class="home-link router-link-active"><!----> <span class="site-name">Ygm的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><!---->  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>HTML&amp;CSS</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/my_learn/HTML/" class="sidebar-link">HTML部分知识点</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/my_learn/JS/" class="sidebar-heading clickable"><span>JS</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/my_learn/Performance/" class="sidebar-heading clickable"><span>性能</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/my_learn/Browser/" class="sidebar-heading clickable"><span>浏览器</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/my_learn/Vue/" class="sidebar-heading clickable router-link-active open"><span>Vue</span> <span class="arrow down"></span></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/my_learn/Vue/Vue之 响应式原理详解.html" class="sidebar-link">Vue之 响应式原理详解</a></li><li><a href="/my_learn/Vue/Vue之 组件通信详解.html" class="active sidebar-link">Vue之 组件通信详解</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/my_learn/Vue/Vue之 组件通信详解.html#一-预读文档" class="sidebar-link"></a></li><li class="sidebar-sub-header"><a href="/my_learn/Vue/Vue之 组件通信详解.html#二-父子间通信" class="sidebar-link"></a></li><li class="sidebar-sub-header"><a href="/my_learn/Vue/Vue之 组件通信详解.html#三-非父子间通信" class="sidebar-link"></a></li></ul></li><li><a href="/my_learn/Vue/Vue之 虚拟DOM详解.html" class="sidebar-link">Vue之 虚拟DOM详解</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/my_learn/Webpack/" class="sidebar-heading clickable"><span>Webpack</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/my_learn/Network/" class="sidebar-heading clickable"><span>计算机网络</span> <span class="arrow right"></span></a> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="vue之-组件通信详解"><a href="#vue之-组件通信详解" class="header-anchor">#</a> Vue之 组件通信详解</h1> <h3 id="目录"><a href="#目录" class="header-anchor">#</a> 目录</h3> <p>1 <a href="#1">预读文档</a></p> <p>2 <a href="#2">父子间通信</a></p> <p>3 <a href="#3">非父子间通信</a></p> <h2 id="一-预读文档"><a href="#一-预读文档" class="header-anchor">#</a> <span id="1">一 预读文档 </span></h2> <p>01 <a href="https://juejin.im/post/5d267dcdf265da1b957081a3" target="_blank" rel="noopener noreferrer">vue中8种组件通信方式<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <p>阅读原因: 直接参考文档</p> <p>02 <a href="https://juejin.im/post/5cde0b43f265da03867e78d3" target="_blank" rel="noopener noreferrer">Vue 组件间通信六种方式<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <p>阅读原因: 具体介绍了一些实用的 注意点和实际使用方法，必读</p> <h2 id="二-父子间通信"><a href="#二-父子间通信" class="header-anchor">#</a> <span id="2"> 二 父子间通信 </span></h2> <p>Q1: 父子间通信 的方式有哪些</p> <p>A:</p> <p>S1 <code>props + this.$emit</code>: 伪代码示例见下</p> <div class="language-html extra-class"><pre class="language-html"><code>
+// 父组件
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>child-part</span> <span class="token attr-name">:name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>fatherData<span class="token punctuation">&quot;</span></span> <span class="token attr-name">@child-event</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>xxx(childData)<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>child-part</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+
+
+// 子组件
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>this.$emit('child-event', data1)<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+
+props: ['name']
+</code></pre></div><p>S2 <code>this.$children[0].dataXxx + this.$parent.dataYyy</code>: 伪代码示例见下</p> <div class="language-html extra-class"><pre class="language-html"><code>
+// 父组件
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>child-part</span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>child-part</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>changeA<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>点击改变子组件值<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+
+  dataYyy<span class="token operator">:</span> <span class="token string">'fatherValue'</span><span class="token punctuation">,</span>
+
+  <span class="token function">changeA</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>$children<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>dataXxx <span class="token operator">=</span> <span class="token string">'new value'</span>  <span class="token comment">// 获取到子组件A</span>
+<span class="token punctuation">}</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+
+
+// 子组件
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span><span class="token punctuation">&gt;</span></span>{{messageA}}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span> 获取父组件的值为:  {{parentVal}}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+
+dataXxx<span class="token operator">:</span> <span class="token string">'this is old'</span>
+
+computed<span class="token operator">:</span><span class="token punctuation">{</span>
+  <span class="token function">parentVal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$parent<span class="token punctuation">.</span>dataYyy  <span class="token comment">// 获取到父组件值</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+</code></pre></div><p>关于使用注意点，见下:</p> <p><img src="https://user-gold-cdn.xitu.io/2019/7/11/16bde62519013ad8?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="注意点"></p> <p>S3 <code>this.refs.xxx</code>: 伪代码示例见下</p> <blockquote><p>ref：如果在普通的 DOM元素上使用，指向的就是 DOM元素
+如果用在子组件上，就指向组件实例 + 可以通过实例 直接获取到 组件的方法/数据</p></blockquote> <div class="language-html extra-class"><pre class="language-html"><code>
+// 父组件
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>child-B</span> <span class="token attr-name">ref</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>childB<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>child-B</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+  <span class="token keyword">const</span> childB <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$refs<span class="token punctuation">.</span>childB<span class="token punctuation">;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>childB<span class="token punctuation">.</span>xxx<span class="token punctuation">)</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+
+
+// 子组件B
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>
+  &lt;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+
+  <span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+      xxx<span class="token operator">:</span> <span class="token string">'xxx'</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+</code></pre></div><h2 id="三-非父子间通信"><a href="#三-非父子间通信" class="header-anchor">#</a> <span id="3"> 三 非父子间通信 </span></h2> <p>Q1: 非父子间通信 的方式有哪些</p> <p>A: 这里的非父子间通信，是指 不仅仅限于父子间，而不是不能用于 父子间通信</p> <p>S1 <code>this.$attrs + inheritAttrs + v-bind=&quot;$attrs&quot;</code>: 适用于爷孙通信，伪代码示例见下</p> <div class="language-html extra-class"><pre class="language-html"><code>
+// 爷组件A
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>child-B</span>
+      <span class="token attr-name">d1</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>1<span class="token punctuation">&quot;</span></span>
+      <span class="token attr-name">d2</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>2<span class="token punctuation">&quot;</span></span>
+      <span class="token attr-name">d3</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>3<span class="token punctuation">&quot;</span></span>
+      <span class="token attr-name">d4</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>4<span class="token punctuation">&quot;</span></span>
+    <span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>child-B</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+
+
+// 父组件B
+&lt;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>border<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span>d1: {{ d1 }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span>childB的 $attrs: {{ $attrs }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>child-C</span> <span class="token attr-name">v-bind</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>$attrs<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>child-C</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  <span class="token operator">...</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+  inheritAttrs<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token comment">// 关闭  自动挂载到组件根元素上的 没有在props声明的属性</span>
+
+  props<span class="token operator">:</span> <span class="token punctuation">{</span>
+    d1<span class="token operator">:</span> String <span class="token comment">// d1作为props属性绑定</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+  <span class="token function">created</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>$attrs<span class="token punctuation">)</span>  <span class="token comment">// { &quot;d2&quot;: &quot;2&quot;, &quot;d3&quot;: &quot;3&quot;, &quot;d4&quot;: &quot;4&quot;}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+
+
+// 孙组件C
+&lt;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>border<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span>d2: {{ d2 }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span>childC的 $attrs: {{ $attrs }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  <span class="token operator">...</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+  inheritAttrs<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token comment">// 关闭  自动挂载到组件根元素上的 没有在props声明的属性</span>
+
+  props<span class="token operator">:</span> <span class="token punctuation">{</span>
+    d2<span class="token operator">:</span> String <span class="token comment">// d2作为props属性绑定</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+  <span class="token function">created</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>$attrs<span class="token punctuation">)</span>  <span class="token comment">// { &quot;d3&quot;: &quot;3&quot;, &quot;d4&quot;: &quot;4&quot;}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+</code></pre></div><p>S2 <code>provide + inject</code>: 伪代码示例见下</p> <div class="language-html extra-class"><pre class="language-html"><code>
+// 提出组件
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>other-B</span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>other-B</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+  provide<span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span><span class="token operator">:</span> <span class="token string">&quot;demo&quot;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+
+
+// 注入 组件B/C/D...
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>
+  &lt;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">&gt;</span></span> {{demo}} <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+  inject<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'for'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+
+  <span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+      demo<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>for
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+</code></pre></div><p>S3 <code>eventBus事件总线</code>: 伪代码示例见下</p> <div class="language-html extra-class"><pre class="language-html"><code>
+// event-bus.js
+import Vue from 'vue'
+export const EventBus = new Vue()
+
+
+// A 组件： 发布事件
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>additionHandle<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span> 加法器<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span> 
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span>EventBus<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./event-bus.js'</span>
+
+num<span class="token operator">:</span><span class="token number">1</span><span class="token punctuation">,</span>
+
+<span class="token function">additionHandle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  EventBus<span class="token punctuation">.</span><span class="token function">$emit</span><span class="token punctuation">(</span><span class="token string">'addition'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    num<span class="token operator">:</span><span class="token keyword">this</span><span class="token punctuation">.</span>num<span class="token operator">++</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+
+
+// B 组件: 接收事件
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">&gt;</span></span>计算和: {{count}}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> EventBus <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./event-bus.js'</span>
+
+count<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+
+<span class="token function">mounted</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  EventBus<span class="token punctuation">.</span><span class="token function">$on</span><span class="token punctuation">(</span><span class="token string">'addition'</span><span class="token punctuation">,</span> <span class="token parameter">param</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>count <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>count <span class="token operator">+</span> param<span class="token punctuation">.</span>num<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+EventBus<span class="token punctuation">.</span><span class="token function">$off</span><span class="token punctuation">(</span><span class="token string">'addition'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>  <span class="token comment">//销毁监听</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+</code></pre></div><p>S4 <code>vuex</code>: 伪代码示例见下</p> <div class="language-js extra-class"><pre class="language-js"><code>
+<span class="token comment">// vuex文件</span>
+<span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'vue'</span>
+<span class="token keyword">import</span> Vuex <span class="token keyword">from</span> <span class="token string">'vuex'</span>
+Vue<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>Vuex<span class="token punctuation">)</span>
+
+<span class="token keyword">const</span> state <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 初始化A和B组件的数据，等待获取</span>
+  AMsg<span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+  BMsg<span class="token operator">:</span> <span class="token string">''</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> mutations <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token function">receiveAMsg</span><span class="token punctuation">(</span><span class="token parameter">state<span class="token punctuation">,</span> payload</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 将A组件的数据存放于state</span>
+    state<span class="token punctuation">.</span>AMsg <span class="token operator">=</span> payload<span class="token punctuation">.</span>AMsg
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+  <span class="token function">receiveBMsg</span><span class="token punctuation">(</span><span class="token parameter">state<span class="token punctuation">,</span> payload</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 将B组件的数据存放于state</span>
+    state<span class="token punctuation">.</span>BMsg <span class="token operator">=</span> payload<span class="token punctuation">.</span>BMsg
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">new</span> <span class="token class-name">Vuex<span class="token punctuation">.</span>Store</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  state<span class="token punctuation">,</span>
+  mutations
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre></div><p><img src="https://user-gold-cdn.xitu.io/2019/5/17/16ac35bf70ef8eb1?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="vuex图示"></p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/my_learn/Vue/Vue之 响应式原理详解.html" class="prev">
+        Vue之 响应式原理详解
+      </a></span> <span class="next"><a href="/my_learn/Vue/Vue之 虚拟DOM详解.html">
+        Vue之 虚拟DOM详解
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/my_learn/assets/js/app.3ea49b25.js" defer></script><script src="/my_learn/assets/js/2.8ecdc4bf.js" defer></script><script src="/my_learn/assets/js/25.bdf87c09.js" defer></script>
+  </body>
+</html>

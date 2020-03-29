@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>性能之 防抖和节流 | Ygm的博客</title>
+    <meta name="description" content="前端学习">
+    <meta name="generator" content="VuePress 1.3.1">
+    
+    
+    <link rel="preload" href="/my_learn/assets/css/0.styles.d157d8f1.css" as="style"><link rel="preload" href="/my_learn/assets/js/app.3ea49b25.js" as="script"><link rel="preload" href="/my_learn/assets/js/2.8ecdc4bf.js" as="script"><link rel="preload" href="/my_learn/assets/js/21.ae394a19.js" as="script"><link rel="prefetch" href="/my_learn/assets/js/10.37afb546.js"><link rel="prefetch" href="/my_learn/assets/js/11.117681fa.js"><link rel="prefetch" href="/my_learn/assets/js/12.52efb4c4.js"><link rel="prefetch" href="/my_learn/assets/js/13.beb693cf.js"><link rel="prefetch" href="/my_learn/assets/js/14.11bf1e2b.js"><link rel="prefetch" href="/my_learn/assets/js/15.68d70280.js"><link rel="prefetch" href="/my_learn/assets/js/16.fdc36850.js"><link rel="prefetch" href="/my_learn/assets/js/17.a1d02956.js"><link rel="prefetch" href="/my_learn/assets/js/18.d47e8f01.js"><link rel="prefetch" href="/my_learn/assets/js/19.d35ec879.js"><link rel="prefetch" href="/my_learn/assets/js/20.656b275b.js"><link rel="prefetch" href="/my_learn/assets/js/22.852b9c1e.js"><link rel="prefetch" href="/my_learn/assets/js/23.e6628bca.js"><link rel="prefetch" href="/my_learn/assets/js/24.d396eb25.js"><link rel="prefetch" href="/my_learn/assets/js/25.bdf87c09.js"><link rel="prefetch" href="/my_learn/assets/js/26.705b13c0.js"><link rel="prefetch" href="/my_learn/assets/js/27.b3a897a5.js"><link rel="prefetch" href="/my_learn/assets/js/28.5a3d4fb3.js"><link rel="prefetch" href="/my_learn/assets/js/29.186610e5.js"><link rel="prefetch" href="/my_learn/assets/js/3.560b90ed.js"><link rel="prefetch" href="/my_learn/assets/js/4.b2c0328d.js"><link rel="prefetch" href="/my_learn/assets/js/5.ad9d7d87.js"><link rel="prefetch" href="/my_learn/assets/js/6.9ebd85a9.js"><link rel="prefetch" href="/my_learn/assets/js/7.a196bf9f.js"><link rel="prefetch" href="/my_learn/assets/js/8.841ab6c0.js"><link rel="prefetch" href="/my_learn/assets/js/9.29813a80.js">
+    <link rel="stylesheet" href="/my_learn/assets/css/0.styles.d157d8f1.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/my_learn/" class="home-link router-link-active"><!----> <span class="site-name">Ygm的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><!---->  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>HTML&amp;CSS</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/my_learn/HTML/" class="sidebar-link">HTML部分知识点</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/my_learn/JS/" class="sidebar-heading clickable"><span>JS</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/my_learn/Performance/" class="sidebar-heading clickable router-link-active open"><span>性能</span> <span class="arrow down"></span></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/my_learn/Performance/性能之 防抖和节流.html" class="active sidebar-link">性能之 防抖和节流</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/my_learn/Performance/性能之 防抖和节流.html#一-预读文档" class="sidebar-link"></a></li><li class="sidebar-sub-header"><a href="/my_learn/Performance/性能之 防抖和节流.html#二-防抖" class="sidebar-link"></a></li><li class="sidebar-sub-header"><a href="/my_learn/Performance/性能之 防抖和节流.html#三-节流" class="sidebar-link"></a></li></ul></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/my_learn/Browser/" class="sidebar-heading clickable"><span>浏览器</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/my_learn/Vue/" class="sidebar-heading clickable"><span>Vue</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/my_learn/Webpack/" class="sidebar-heading clickable"><span>Webpack</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/my_learn/Network/" class="sidebar-heading clickable"><span>计算机网络</span> <span class="arrow right"></span></a> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="性能之-防抖和节流"><a href="#性能之-防抖和节流" class="header-anchor">#</a> 性能之 防抖和节流</h1> <h3 id="目录"><a href="#目录" class="header-anchor">#</a> 目录</h3> <p>1 <a href="#1">预读文档</a></p> <p>2 <a href="#2">防抖实现</a></p> <p>3 <a href="#3">节流实现</a></p> <h2 id="一-预读文档"><a href="#一-预读文档" class="header-anchor">#</a> <span id="1">一 预读文档 </span></h2> <p>1 阅读文档有</p> <p>01 <a href="https://github.com/mqyqingfeng/Blog/issues/22" target="_blank" rel="noopener noreferrer">JS专题之 跟着underscore学防抖<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <p>02 <a href="https://github.com/mqyqingfeng/Blog/issues/26" target="_blank" rel="noopener noreferrer">JS专题之 跟着underscore学节流<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <p>03 <a href="https://juejin.im/post/5cef46226fb9a07eaf2b7516" target="_blank" rel="noopener noreferrer">一个合格的中级前端工程师需要掌握的 28 个 JavaScript 技巧<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <p>阅读原因: 直接参考文档</p> <h2 id="二-防抖"><a href="#二-防抖" class="header-anchor">#</a> <span id="2">二 防抖 </span></h2> <p>1 Q: 什么是防抖(debounce)</p> <p>A:</p> <p>S1 当用户的操作会引起 频繁的JS计算/网络请求等时，就要对事件的 响应回调进行频率限制，以保证性能</p> <p>S2 防抖: N秒内 函数只会被执行一次，如果 在N秒内再次被触发，则<code>(清除定时器) 重新计算延迟时间</code></p> <p>2 Q: 如何实现防抖</p> <p>A: 代码见下:</p> <div class="language-js extra-class"><pre class="language-js"><code>
+<span class="token keyword">function</span> <span class="token function">debounce</span><span class="token punctuation">(</span><span class="token parameter">fn<span class="token punctuation">,</span> wait<span class="token punctuation">,</span> immediate<span class="token operator">=</span><span class="token boolean">true</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> timer  <span class="token comment">//S1 闭包，这样再次触发事件时, 上次绑定的值不会丢失</span>
+  <span class="token keyword">let</span> result
+
+  <span class="token keyword">let</span> <span class="token function-variable function">_debounde</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token operator">...</span>args</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  <span class="token comment">// S2.1 防止事件回调函数中的 event等参数丢失</span>
+    <span class="token keyword">let</span> ctx <span class="token operator">=</span> <span class="token keyword">this</span>   <span class="token comment">// S2.2 防止事件回调函数中的 this指向丢失(指向对应的DOM元素)</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>timer<span class="token punctuation">)</span> <span class="token punctuation">{</span>   <span class="token comment">// S3 当触发时间 t1&lt;wait时, 需要清除之前的 定时器函数执行</span>
+      <span class="token function">clearTimeout</span><span class="token punctuation">(</span>timer<span class="token punctuation">)</span>  <span class="token comment">// 但是注意，clearTimeout不会清除 timer的值(一个定时器函数 Id)</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>immediate<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">let</span> callNow <span class="token operator">=</span> <span class="token operator">!</span>timer
+
+      <span class="token comment">// S4 t1&gt;wait时，才会再次执行fn; t1&lt;wait, timer一直不会重置为null，所以一直不会再次执行fn</span>
+      timer <span class="token operator">=</span> <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        timer <span class="token operator">=</span> <span class="token keyword">null</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span> wait<span class="token punctuation">)</span>
+
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>callNow<span class="token punctuation">)</span> <span class="token punctuation">{</span> result <span class="token operator">=</span> <span class="token function">fn</span><span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span> args<span class="token punctuation">)</span> <span class="token punctuation">}</span>
+
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>  <span class="token comment">// 非立即执行时，执行原逻辑</span>
+      timer <span class="token operator">=</span> <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token function">fn</span><span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span> args<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span> wait<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> result  <span class="token comment">// S5 fn回调可能会有返回值</span>
+  <span class="token punctuation">}</span>
+
+  _debounde<span class="token punctuation">.</span><span class="token function-variable function">cancel</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  <span class="token comment">// S6 取消功能，执行后会立刻执行一次immediate的逻辑</span>
+    <span class="token function">clearTimeout</span><span class="token punctuation">(</span>timeout<span class="token punctuation">)</span>
+    timeout <span class="token operator">=</span> <span class="token keyword">null</span>  <span class="token comment">// 关键就是立刻重置了timer的值</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> _debounde
+
+<span class="token punctuation">}</span>
+
+</code></pre></div><h2 id="三-节流"><a href="#三-节流" class="header-anchor">#</a> <span id="3">三 节流 </span></h2> <p>1 Q: 什么是节流(throttle)</p> <p>A:</p> <p>S1 一段时间内不管触发多少次事件，都只按固定的频率响应对应回调</p> <p>S2 防抖的核心是 <code>不满足wait 就重置</code>, 节流的核心是 <code>不满足wait 就忽略</code></p> <p>2 Q: 如何实现节流</p> <p>A:</p> <p>S1 方法1: 时间戳法, 代码见下</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">throttle</span><span class="token punctuation">(</span><span class="token parameter">fn<span class="token punctuation">,</span> wait</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> previos <span class="token operator">=</span> <span class="token number">0</span>
+  <span class="token keyword">let</span> self<span class="token punctuation">,</span> args
+  <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    self <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">,</span> args <span class="token operator">=</span> arguments
+
+    <span class="token keyword">let</span> now <span class="token operator">=</span> <span class="token operator">+</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>now <span class="token operator">-</span> previous <span class="token operator">&gt;=</span> wait<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">fn</span><span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> args<span class="token punctuation">)</span>
+      previous <span class="token operator">=</span> now
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>S2 方法2: 定时器法, 代码见下</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">throttle</span><span class="token punctuation">(</span><span class="token parameter">fn<span class="token punctuation">,</span> wait</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> timer<span class="token punctuation">,</span> self<span class="token punctuation">,</span> args
+
+  <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    timer <span class="token operator">=</span> <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+      timer <span class="token operator">=</span> <span class="token keyword">null</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> wait<span class="token punctuation">)</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>timer<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token function">fn</span><span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>S3 最终综合版本见下</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">throttle</span><span class="token punctuation">(</span><span class="token parameter">func<span class="token punctuation">,</span> wait<span class="token punctuation">,</span> options <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> timer<span class="token punctuation">,</span> result<span class="token punctuation">,</span> cxt<span class="token punctuation">,</span> args
+  <span class="token keyword">let</span> previous <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  
+  <span class="token keyword">let</span> <span class="token function-variable function">later</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// S4 首次不执行时，pervious会重置为0, 从而保证S2逻辑执行，下次会再次走 定时器逻辑</span>
+    previous <span class="token operator">=</span> options<span class="token punctuation">.</span>leading <span class="token operator">?</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token number">0</span>
+    timer <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    result <span class="token operator">=</span> <span class="token function">func</span><span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>cxt<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// S5 执行完回调，会重置context和args，释放闭包内存</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>timer<span class="token punctuation">)</span> cxt <span class="token operator">=</span> args <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+
+  <span class="token keyword">let</span> <span class="token function-variable function">throttled</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    cxt <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+    args <span class="token operator">=</span> arguments<span class="token punctuation">;</span>   <span class="token comment">// S1 绑定正确的 事件回调函数的 this指向和event参数对象</span>
+
+    <span class="token keyword">let</span> now <span class="token operator">=</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token comment">// S2.1 leading为false时，pervious会设置为当前值，从而保证首次执行的 remaining &gt; 0</span>
+    <span class="token comment">// S2.2 leading为false时, 则 永远不会使用 时间戳部分来 控制节流</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>previous <span class="token operator">&amp;&amp;</span> options<span class="token punctuation">.</span>leading <span class="token operator">===</span> <span class="token boolean">false</span><span class="token punctuation">)</span> previous <span class="token operator">=</span> now<span class="token punctuation">;</span>
+
+    <span class="token keyword">let</span> remaining <span class="token operator">=</span> wait <span class="token operator">-</span> <span class="token punctuation">(</span>now <span class="token operator">-</span> previous<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>remaining <span class="token operator">&lt;=</span> <span class="token number">0</span> <span class="token operator">||</span> remaining <span class="token operator">&gt;</span> wait<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">// S6 如果定时器部分被延误执行了，则去除它的 设置部分，防止干扰到 时间戳部分</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>timer<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">clearTimeout</span><span class="token punctuation">(</span>timer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        timer <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      previous <span class="token operator">=</span> now<span class="token punctuation">;</span>
+      <span class="token function">func</span><span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>cxt<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>timer<span class="token punctuation">)</span> cxt <span class="token operator">=</span> args <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>  <span class="token comment">// S7 同S5</span>
+
+    <span class="token comment">// S3.1 remaing&gt;0时, 且还未设置过timer</span>
+    <span class="token comment">// S3.2 如果remaing还是&gt;0(间隔t1&lt;wait)，但是timer回调还未执行，就会被忽略</span>
+    <span class="token comment">// S3.3 如果trailing设置了为假，则 永远不会使用 定时器部分来 控制节流</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>timer <span class="token operator">&amp;&amp;</span> options<span class="token punctuation">.</span>trailing <span class="token operator">!==</span> <span class="token boolean">false</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      timer <span class="token operator">=</span> <span class="token function">setTimeout</span><span class="token punctuation">(</span>later<span class="token punctuation">,</span> remaining<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> result
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  throttled<span class="token punctuation">.</span><span class="token function-variable function">cancel</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">clearTimeout</span><span class="token punctuation">(</span>timer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    timer <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    previous <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">return</span> throttled
+<span class="token punctuation">}</span>
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/my_learn/JS/模块化之 模块化详解.html" class="prev">
+        模块化之 模块化详解
+      </a></span> <span class="next"><a href="/my_learn/Browser/浏览器之 storage详解.html">
+        浏览器之 storage详解
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/my_learn/assets/js/app.3ea49b25.js" defer></script><script src="/my_learn/assets/js/2.8ecdc4bf.js" defer></script><script src="/my_learn/assets/js/21.ae394a19.js" defer></script>
+  </body>
+</html>
