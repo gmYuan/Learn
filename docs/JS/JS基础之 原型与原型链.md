@@ -1,0 +1,140 @@
+# JS基础之 原型与原型链
+
+目录:
+
+1 [预读文档](#1)
+
+2 [原型](#2)
+
+3 [原型链](#3)
+
+4 [函数和对象 的创建过程](#4)
+
+  
+## <span id="1"> 1 预读文档 </span>
+
+01 [JS深入之 从原型到原型链](https://github.com/mqyqingfeng/Blog/issues/2)
+
+02 [JS中先有Object还是先有Function](https://www.zhihu.com/question/35442532)
+
+03 [深度解析原型中的各个难点](https://github.com/KieSun/Dream/issues/2)
+
+阅读原因: 直接参考文档
+
+
+## <span id="2"> 2 原型 </span>
+
+1 Q: 什么是原型
+
+A:
+
+S1 JS中，每个函数都有一个prototype属性，指向一个对象
+
+S2 JS中，每个对象都有一个__proto__属性，指向一个对象
+
+
+S3.1 我们知道，通过构造函数B，可以创建出实例对象C
+
+S3.2 构造函数B也是函数，所以当然也有 prototype属性
+
+S3.3 实例对象C也是对象，所以当然也有 __proto__属性
+
+S3.4 特殊的是，`实例对象.__proto__ = 构造函数.prototype`, 都指向同一个原型对象A
+
+
+S4.1 实例对象C可以读取原型对象A上的属性和方法
+
+S4.2 原型对象A有一个constructor属性，指向其关联的构造函数
+
+
+用代码表示为:
+
+```js
+function Person() {         // 构造函数: Person
+  ......
+}
+
+let person = new Person()     // 实例对象: person
+
+console.log(person.__proto__ === Person.prototype)                 // true
+console.log(Person.prototype.constructor === Person)               // true
+
+// Object.getPrototypeOf方法,可以获得实例对象的 原型对象
+console.log(Object.getPrototypeOf(person) === Person.prototype)   // true
+```
+
+![实例对象、构造函数、原型对象关系](https://raw.githubusercontent.com/mqyqingfeng/Blog/master/Images/prototype2.png)
+
+
+
+## <span id="3"> 3 原型链 </span>
+
+1 Q: 什么是原型链
+
+A: 
+
+S1.1 每个对象都有一个原型对象，原型对象也有原型对象，一层一层的原型对象就构成了原型链
+
+S1.2 原型链的顶层对象是Object.prototype, 再往上则: `Object.prototype.__proto__ 为 null`
+
+S1.3 通过原型链，可以实现属性的共享和继承
+
+
+S2 原型链的属性查找机制:
+
+会依次在 实例对象-> 原型对象A-> A.__proto_对象->  .....-> Object.prototype中查找属性
+
+
+S3 原型链的属性修改机制:
+
+只会修改实例对象 本身的属性，如果不存在，则添加该属性
+
+![原型链](https://raw.githubusercontent.com/mqyqingfeng/Blog/master/Images/prototype5.png)
+
+
+
+## <span id="4"> 4 函数和对象 的创建过程 </span>
+
+1 `Object.prototype`
+
+S1 浏览器内置就实现的 key-value对象，它是一个对象 + 对象都有__proto__属性
+
+S2 ES规定了: `Object.prototype.__proto = null`
+
+
+2 `Function.prototype`
+
+S1 浏览器内置就实现的 key-value
+
+S2 规定了: `Function.prototype.__proto__ = Object.prototype`
+
+
+3 `Function构造函数`
+
+S1 构造函数对象 具有 __proto__属性 + prototype属性
+
+S2 规定了: `Function.__proto__ = Function.prototype`，就只是这么规定的
+
+S3 `Function.prototype = Function.prototype`
+
+
+4 `Object构造函数`
+
+S1 构造函数对象 具有 __proto__属性 + prototype属性
+
+S2 Object构造函数 是由Function构造出的实例对象，所以 `Object.__proto__ = Function.prototype`
+
+S3 `Object.prototype = Object.prototype`
+
+
+5 `自定义函数的 实例对象`
+
+S1 实例对象fn是由 自定义构造函数Fn构造出的，所以 `fn.__proto__ = Fn.prototype`
+
+S2 自定义构造函数Fn 是由 Function构造的实例，所以 `Fn.__proto__ = Function.prototype` ，且`Fn.prototype = Fn.prototype`
+
+S3 Fn.prototype是一个对象，它是由Object构造出的实例，所以 `Fn.prototype.__proto__ = Object.prototype`
+
+
+综合上面所有内容，一张经典图理解为:
+![PSHSEj.jpg](https://s1.ax1x.com/2018/06/21/PSHSEj.jpg)

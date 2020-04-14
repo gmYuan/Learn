@@ -15,6 +15,51 @@ module.exports = {
       },
 
       {
+        title: 'JS',
+        path: "/JS/",
+        children: [
+
+          '/JS/JS基础之 数据类型相关',
+
+          // '/JS/JS基础之 垃圾回收详解',
+          
+         
+         
+          // '/JS/JS基础之 判断数据类型',
+          // '/JS/JS基础之 垃圾回收详解',
+
+          // '/JS/JS基础之 数组去重',
+
+          // '/JS/JS基础之 原型与原型链',
+          // '/JS/JS基础之 instanceof模拟实现',
+
+
+          // '/JS/面向对象之 call+apply模拟实现',
+          // '/JS/面向对象之 bind模拟实现',
+          // '/JS/面向对象之 对象继承方式',
+
+          // '/JS/DOM之 DOM事件机制',
+
+
+          // '/JS/ES6之 promise详解',
+
+
+          // '/JS/模块化之 模块化详解',
+        ]
+      },
+
+      {
+        title: '性能',
+        path: "/Performance/",
+        children: [
+          '/Performance/性能之 防抖和节流',
+        
+        ]
+      },
+
+
+
+      {
         title: '浏览器',
         path: "/Browser/",
         children: [
@@ -24,14 +69,38 @@ module.exports = {
 
 
       {
+        title: 'Vue',
+        path: "/Vue/",
+
+        children: [
+          '/Vue/Vue之 响应式原理详解',
+          '/Vue/Vue之 组件通信详解',
+          '/Vue/Vue之 虚拟DOM详解',
+          
+        ]
+      },
+
+
+      {
+        title: 'Webpack',
+        path: "/Webpack/",
+
+        children: [
+          '/Webpack/Webpack之 Webpack基本使用',
+        ]
+      },
+
+
+
+
+      {
         title: '计算机网络',
         path: "/Network/",
 
         children: [
+          '/Network/网络之 跨域方法',
           '/Network/网络之 HTTP状态详解',
-
           '/Network/网络之 浏览器缓存详解',
-         
           '/Network/网络之 HTTP2详解',
         ]
       },

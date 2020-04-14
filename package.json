@@ -12,12 +12,9 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
-
   },
-  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gmYuan/my_learn.git"
