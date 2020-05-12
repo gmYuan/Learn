@@ -114,6 +114,16 @@ module.exports = {
         ]
       },
 
+      {
+        title: '算法与数据结构',
+        path: "/Algo/",
+
+        children: [
+          '/Algo/LeetCode167',
+
+        ]
+      },
+
 
 
     ]
