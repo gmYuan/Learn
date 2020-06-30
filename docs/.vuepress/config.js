@@ -108,6 +108,18 @@ module.exports = {
         ]
       },
 
+      {
+        title: '设计模式',
+        path: "/Pattern/",
+
+        children: [
+          '/Pattern/Pattern之 工厂模式',
+          '/Pattern/Pattern之 单例模式',
+          '/Pattern/Pattern之 适配器模式',
+          '/Pattern/Pattern之 装饰器模式',
+        ]
+      },
+
 
 
 
@@ -122,16 +134,6 @@ module.exports = {
           '/Network/网络之 HTTP状态详解',
           '/Network/网络之 浏览器缓存详解',
           '/Network/网络之 HTTP2详解',
-
-        ]
-      },
-
-      {
-        title: '算法与数据结构',
-        path: "/Algo/",
-
-        children: [
-          '/Algo/LeetCode167',
 
         ]
       },
