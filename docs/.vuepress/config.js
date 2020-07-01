@@ -113,6 +113,9 @@ module.exports = {
         path: "/Pattern/",
 
         children: [
+          '/Pattern/Pattern之 原型模式',
+
+          
           '/Pattern/Pattern之 工厂模式',
           '/Pattern/Pattern之 单例模式',
           '/Pattern/Pattern之 适配器模式',
