@@ -71,6 +71,7 @@ function Promise(executor) {
   }
 }
 
+
 Promise.prototype.then = function (onFulfilled, onRejected) {
   let self = this
   let promise2
