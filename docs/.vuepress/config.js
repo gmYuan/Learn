@@ -18,14 +18,9 @@ module.exports = {
         title: 'JS',
         path: "/JS/",
         children: [
-
-          // '/JS/JS基础之 数据类型相关',
+          '/JS/JS基础之 数据类型相关',
 
           // '/JS/JS基础之 垃圾回收详解',
-          
-         
-         
-          // '/JS/JS基础之 判断数据类型',
           // '/JS/JS基础之 垃圾回收详解',
 
           // '/JS/JS基础之 数组去重',
@@ -39,12 +34,15 @@ module.exports = {
           // '/JS/面向对象之 对象继承方式',
 
           // '/JS/DOM之 DOM事件机制',
+          // '/JS/模块化之 模块化详解',
 
 
           '/JS/ES6之 promise详解',
+          '/JS/ES6之 Iterator详解',
+          '/JS/ES6之 async详解',
 
 
-          // '/JS/模块化之 模块化详解',
+          
         ]
       },
 
@@ -114,10 +112,11 @@ module.exports = {
 
         children: [
           '/Pattern/Pattern之 原型模式',
+          '/Pattern/Pattern之 单例模式',
 
           
           // '/Pattern/Pattern之 工厂模式',
-          // '/Pattern/Pattern之 单例模式',
+         
           // '/Pattern/Pattern之 适配器模式',
           // '/Pattern/Pattern之 装饰器模式',
         ]
