@@ -9,6 +9,8 @@
 
 03 [JS隐式转换踩坑合集](https://juejin.im/post/5bc5c752f265da0a9a399a62)
 
+04 [浅谈 instanceof 和 typeof 的实现原理](https://juejin.im/post/5b0b9b9051882515773ae714)
+
 预读原因: 直接参考文档
 
 
@@ -127,9 +129,16 @@ function fn() {
 Q3: typeof null 结果为object 的原因是什么
 
 A:
-S1 JS 最初版本使用32 位存储数据，为了性能 使用低位存储变量的类型，000 开头代表是对象
+S1 JS 最初版本使用32 位存储数据，为了性能 使用低位的1-3位  存储变量的类型: 
+- 000：对象
+- 010：浮点数
+- 100：字符串
+- 110：布尔
+-    1：整数
+- null：所有机器码均为0
+- undefined：用 −2^30 整数来表示
 
-S2 然而 null 全都是用0表示的，所以将它错误的判断为 object
+S2 null 全都是用0表示的，所以将它错误的判断为 object
 
 
 Q4: instanceof的模拟实现
