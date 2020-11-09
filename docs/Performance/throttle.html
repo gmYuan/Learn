@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>节流防抖</title>
+</head>
+
+<style>
+    .content {
+        width: 100%;
+        height: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #ddd;
+    }
+</style>
+
+<body>
+    <div class="content">0</div>
+    
+</body>
+</html>
+
+
+<script>
+  let box = document.querySelector('.content')
+  function cb(e) {
+    //console.log('执行了回调', this, e)
+    box.innerHTML =  +box.innerHTML + 1
+    return  666
+  }
+  box.onmousemove = throttle(cb, 2000)
+
+
+// 什么是节流:  每次触发事件后 固定N秒后执行一次回调
+
+//S1  时间戳/顾头不顾尾版:  now - pre > wait时  ==>  执行回调 + pre = now
+//S2 定时器/顾尾不顾头版:  不存在timer时 ==> 执行fn + timer重置为null
+//S3 头尾合并法:  时间戳版 (更新pre + 执行函数 + 清除定时器版干扰) + 定时器版(更新timer + 执行函数 + 清除时间戳版干扰)
+//S4 首尾执行控制法: 对首尾执行 各种新增一个前提条件
+
+function throttle(fn, wait, options={leading: true, tailing: true}) {
+  let pre = 0
+  let timer
+  return function(...args) {
+    const ctx = this
+    // S1 时间戳法:  清除定时器版干扰 + 更新pre + 执行函数
+    let now = +new Date()
+    if (!pre && options.leading === false) { pre = now }
+    let remaining = wait - (now - pre)
+    if (remaining <= 0 || remaining > wait) {
+      if (timer) {
+        clearTimeout(timer)
+        timer = null
+      }
+
+      pre = now
+      fn.apply(ctx, args)
+      console.log('时间戳版执行了', remaining)
+    //S2 定时器版:  清除时间戳版干扰 + 更新timer为null + 执行函数  
+    } else if (!timer && options.tailing === true) {
+      timer = setTimeout( () => {
+        pre = options.leading === false ? 0 : +new Date()
+        timer = null
+        fn.apply(ctx, args)
+        console.log('定时器版执行了', remaining)
+      }, remaining);
+    }
+
+  }
+}
+
+</script>
