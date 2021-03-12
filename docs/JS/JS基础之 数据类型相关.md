@@ -1,50 +1,37 @@
 ## JS基础之 数据类型相关
 
-
-### <span id="1">一  预读文档</span>
-
-01 [JS高级程序设计](/))
-
-02 [你真的掌握变量和类型了吗](https://juejin.im/post/5cec1bcff265da1b8f1aa08f)
-
-03 [JS隐式转换踩坑合集](https://juejin.im/post/5bc5c752f265da0a9a399a62)
-
-04 [浅谈 instanceof 和 typeof 的实现原理](https://juejin.im/post/5b0b9b9051882515773ae714)
-
-预读原因: 直接参考文档
-
-
-### <span id="2"> 二 类型种类 </span>
+##  一 类型种类 
 
 Q1: JS有哪些数据类型
-
 A: 
-
 S1 基本数据类型: Number/ Boolean/ String/ Null/ Undefined/ Symbol/ BigInt
-
 S2 引用类型: Object
 
 
-Q2:  浮点数计算精度问题   0.1 + 0.2 !==0.3 的原因 + 解决方法
+Q2: Symbol类型 有哪些使用场景
+A:
+S1 Symbol('desc') 返回的是 `一个独一无二的值 ` ==> 所以可以用作对象属性名，避免属性名冲突
+S2 用作对象属性名时，只能被 Object.hasOwnPropertySymbols() / Reflect.ownKeys() 获取到 ==>可以用来 `模拟 内部属性/方法`
 
+其他注意点：
+S1 Symbol只能显式转化为字符串/布尔类型， 不能参与和其他数据类型的运算 ===> 否则会报错
+S2 ES6中 内置了很多Symbol类型方法，如 [Symbol.hasInstance]/[Symbol.toPrimitive]
+
+
+Q3:  浮点数计算精度问题   0.1 + 0.2 !==0.3 的原因 + 解决方法
 A:  
-
 S1 计算机在进行计算时，都要把数据转化成 2进制，计算完成后 再把结果转化为 10进制
 S2 0.1 和 0.2 转化为2进制 都是 以1100无限循环的小数
 S3 JS遵循 IEEE 754标准, 用 1位符号位 + 11位指数位 + 52位尾数位保存数据, 所以52位后的数组会进行"四舍五入"
 S4 所以 0.1 和 0.2的 二进制由于发生了进位，导致了计算结果产生了 精度误差
 
 
-Q3: 基本类型 和 引用类型 的区别是什么
-
+Q4: 基本类型 和 引用类型 的区别是什么
 A: 
-
 S1 基本类型在内存中使用 `栈存储`, 存储的是`变量的值`  + 引用类型在内存中使用 `堆存储`, 存储的是`变量的地址`
+S2 所以在比较变量 是否相等时, 基本类型是比较 变量值是否相等 + 引用类型是比较 对象的内存地址是否相同
 
-S2 赋值操作时:  基本类型  按值传递 互相独立 +  引用类型 按引用传递  指向同一个内存地址,会互相影响
-
-S3 比较是否相等, 基本类型是比较 变量值是否相等 + 引用类型是比较 对象的内存地址是否一样
-
+S3 赋值操作时:  基本类型  按值传递 互相独立 +  引用类型 按引用传递  指向同一个内存地址,会互相影响
 S4 基本类型 和  引用类型 作为函数参数传入时, 都是 `按值传递的`
 
 ```js
@@ -65,32 +52,31 @@ console.log(obj.name)     //  'ygm'  而不是 'change name'
 ```
 
 
-Q4: null  和 undefined 的区别是什么
-
+Q5: null  和 undefined 的区别是什么
 A:
 ```js
+// S1  undefiend表示变量创建后还未赋值, null表示变量被人为的指向一个空指针，一般用于对象占位/释放对象
+let obj = null                  // 可以使用
+let name = undefined     // 没有必要
 
-// S1  用Number()转换成数字时, null ==> 0  +  undefined  ==> NaN
+// S2  用Number()转换成数字时, null ==> 0  +  undefined  ==> NaN
 console.log( Number(null) )               // 0
 console.log( Number(undefined) )       //  NaN
 
-// S2 null表示 变量即将指向一个对象  +  undefiend表示变量未赋值
-let obj = null                  // 可以使用
-let name = undefined     // 没有必要
+//S3 typeof进行类型判断时, null的返回值是 ‘object’，undefined的返回值是 'undefined'
+console.log( typeof null )                   // object
+console.log( typeof undefined )       //  undefined
 ```
 
 
-### <span id="3"> 三 类型判断 </span>
+##  二 类型判断
 
 Q1: 有哪些方法可以判断 一个变量的数据类型
-
 A: 
-
-S1 typeof:  number/ boolean/ string/ null==>object/ undefined/  function
-
+S1 typeof:  number/ boolean/ string/ undefined/ null==>object/  function
 S2 instanceOf:    a.__proto__.__proto__....... ===  b.prototype
-
 S3 Object.prototype.toString.call(xxxx)
+
 ```js
 function type(val) {
   return Object.prototype.toString.call(val).toLowerCase().split(' ')[1].slice(0,-1)
@@ -103,7 +89,6 @@ type(str)             // "string"
 
 
 Q2: 如何判断变量是否是 数组类型
-
 A
 ```js
 function fn() {
@@ -127,9 +112,8 @@ function fn() {
 
 
 Q3: typeof null 结果为object 的原因是什么
-
 A:
-S1 JS 最初版本使用32 位存储数据，为了性能 使用低位的1-3位  存储变量的类型: 
+S1 JS 最初版本使用32 位存储数据，为了性能 使用低位的1-3位  表示变量的类型: 
 - 000：对象
 - 010：浮点数
 - 100：字符串
@@ -142,16 +126,14 @@ S2 null 全都是用0表示的，所以将它错误的判断为 object
 
 
 Q4: instanceof的模拟实现
-
 A:
 S1 instaceof的实现原理，是递归查找原型链的过程
-
 ```js
 // 不断查找obj.__proto__.__proto__......, 只有其中有一环指向Fn.prototype, 则为true
 obj1 instanceof Fn
 
 // 模拟实现
-mockInstanceof = function(left, right) {  // left表示左侧对象(实例)，right表示右侧函数对象参数
+const mockInstanceof = function(left, right) {  // left表示左侧对象(实例)，right表示右侧函数对象参数
   let src = left.__proto__
   let target = right.prototype
 
@@ -169,12 +151,10 @@ mockInstanceof = function(left, right) {  // left表示左侧对象(实例)，ri
 ```
 
 
-### <span id="4"> 四 类型转换 </span>
+## 三 类型转换
 
 Q1: JS中转化成 Number类型  的规则是什么
-
 A: 
-
 S1 Number(xxxx: any) / 一元加操作符
 
 ```js
@@ -193,7 +173,6 @@ c( Number({valueOf() {return 23}}) )    //对象:  obj.valueOf/obj.toString:   2
 ```
 
 S2 parseInt(xxx: string, 2/8/10/16进制)
-
 ```js
 const c = console.log
 
@@ -207,7 +186,6 @@ c( parseInt('0xf') )               // 支持16进制表示:  15
 ```
 
 S3 parseFloat(xxx: string)
-
 ```js
 const c = console.log
 
@@ -220,26 +198,17 @@ c( parseFloat('-0023.45dd') )   // 开头是数字的 字符串:    -23.45
 c( parseFloat('0xf') )               // 不支持16进制表示:  0
 ```
 
-
 Q2: JS中转化成 Boolean类型  的规则是什么
-
 A: 
-
 S1 除了5个falsy值转化为false (0 或者 NaN/ false/ 空字符串/ null/ undefined )，其他值都转化为 true
 
-
 Q3: JS中转化成 String  的规则是什么
-
 A: 
-
 S1 xxx.toString()
 S2 null/undefined没有toString ==>  String()
 
-
 Q4:  加法操作符+ 隐式转化规则是什么
-
 A:
-
 有String/toString() 转 String ==>  有Number转 Number
 ```js
 123 + 'abc' = '123abc'                // S1 字符串 + 其他类型，一律转化 字符串拼接
@@ -250,13 +219,10 @@ A:
 123 + true = 124
 ```
 
-
 Q5.1:  == 和 === 有什么区别
-
 A:  == 两侧数据类型不相同时, 会发生隐式类型转化, 而 === 则不会
 
 有Number/ValueOf 转 Number
-
 ```js
 //  S1  null == undefined结果是true，除此之外，null、undefined和其他任何类型的 比较值都为false   
 
@@ -287,7 +253,6 @@ true == 1                    // true
 [undefined] == false     // true
 ```
 
-
 Q5.2 如何让 a == 1 && a == 2 && a == 3 成立
 
 ```js
@@ -299,7 +264,17 @@ const a = {
 }
 ```
 
+## 四  参考文档
 
+01 [JS高级程序设计](/))
+
+02 [阮一峰ES6- Symbol](https://es6.ruanyifeng.com/#docs/symbol)
+
+03 [你真的掌握变量和类型了吗](https://juejin.im/post/5cec1bcff265da1b8f1aa08f)
+
+04 [JS隐式转换踩坑合集](https://juejin.im/post/5bc5c752f265da0a9a399a62)
+
+05 [浅谈 instanceof 和 typeof 的实现原理](https://juejin.im/post/5b0b9b9051882515773ae714)
 
 
 
