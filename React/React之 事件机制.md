@@ -1,86 +1,50 @@
 ﻿# React之 事件机制
 
-含义
-JS对象 --> 事件监听 --> 合成事件层(synthetic Event)
-  
-优点 
-抹平 浏览器事件对象的 兼容性
-实现了所有原生事件对象 的属性方法
-
-步骤
-S1 事件委派
-  - 组件最外层节点--> 事件监听处理中心--> 管理内部 每个元素的监听事件 和 处理回调
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## 事件机制
 
-Q1 React中有那些生命周期函数，分别有什么作用
-
-A:
-
-挂载阶段
-S1 constructor
-  - new class时自动触发， 一般用于 初始化 state值
-  
-S2 componentWillMount
-  - 一般用于 数据获取/定时器设置
-
-S3 render
-  - 生成了JS对象
-
-S4 componentDidMount
-  - 一般用于 配合ref 获取DOM
-
-
-卸载阶段
-S1 componentWillUnmount
-  - 一般用于 清理数据，如定时器/轮询事件等
-
-
-更新阶段
-S1 componentWillReceiveProps(nextProps)
-  - 从父组件接收到新props前 调用
-
-S2 shouldComponentUpdate(nextProps, nextState)
-  - 一般用于 控制组件是否重渲染
-  - 本质是 子组合内的props未更新时，不会因为其他props的更新触发 重新渲染
-  - 是一种 性能优化的 方式
-
-S3 componentWillUpdate(nextProps, nextState)
-  - 组件更新渲染前调用
-  - 不能执行 setState()方法，原因 >>>
-
-S4 componentDidUpdate()(preProps, preState)
-  - 组件重新渲染生成DOM后 调用
-
-
-## refs
-
-Q1： refs是什么，有什么作用
+Q1: React的事件机制是什么
 
 A
-- refs是组件上一种特殊的props，它指向 组件A被创建后 生成的组件实例a
-- 通过ref，可以调用 组件的实例方法；可以获取 组件的内部DOM
-- 创建方法为：<A ref={(ref) => this.xxx = ref } />
+S1 React通过 JS对象 --> 事件监听 --> 合成事件层(synthetic Event)，来模拟实现了DOM事件
+  
+S2  React事件 抹平了 浏览器事件的 兼容性差异
 
+实现步骤为：
+
+S1 事件委派
+  - 组件最外层--> 事件监听处理中心--> 管理内部 每个元素的监听事件 和 处理回调
+
+S2 绑定this
+  - bind(this,xxx)
+  - 箭头函数
+
+Q2：React的事件机制 和 DOM原生事件的区别
+
+A：
+  - 事件阶段不同：
+    原生事件分为 事件捕获-目标元素-事件冒泡的阶段，而React的事件只实现了捕获阶段，原因是
+    IE9以下不支持 捕获阶段，且React阻止冒泡抹平了IE9的语法差异，只需使用e.preventDefault()
+
+  - 实现的事件类型 不同：React事件是 DOM原生事件的子类型，未实现 resize/window等事件 
+  - 事件回调的 绑定方式不同：原生DOM可以通过addEventListener()等来绑定，React只能通过onXXX
+  - 事件对象不同：低版本IE要通过window.event获取事件对象，而React事件通过event即可
+
+
+## 受控组件 与 非受控组件
+
+Q1：什么是受控组件 和 非受控组件，有什么区别
+
+A：
+
+  - 受控组件：通过state/props 控制组件value 的表单，称为 受控组件
+  - 非受控组件：没有 value props，一般通过 操作DOM来设置表单值，称为 非受控组件
+
+区别
+  - 受控组件一般有 porps --> onChange --> setState --> render这一套流程，非受控组件 则没有
+  - 受控组件 是数据驱动，非受控组件则需要手动操作DOM
 
 
 ## 参考文档
 
-01 []()
-
-02 []()
+01 [深入React技术栈](/)
+02 [React官方文档- 表单](https://zh-hans.reactjs.org/docs/forms.html)

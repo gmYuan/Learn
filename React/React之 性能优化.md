@@ -1,101 +1,48 @@
-﻿# 性能之 防抖和节流
+﻿# React之 性能优化
 
-## 防抖部分
+Q1 React有哪些 性能优化方法
+A：
+  核心目标是：尽可能减少对 DOM的修改
+  - pureRender
 
-1 什么是防抖(debounce)：
-触发事件N秒后 才执行响应回调，N秒内每次重新触发，则都重新开始计时
+Q2 什么是 pureRender
+A：
+  - pure指的是 纯函数：相同输入返回相同输出 + 不依赖于外部状态，也不会对外部状态有任何影响
+  - pureRender：尽可能让组件只依赖 props和state，从而通过 shouldComponentUpdate 节省render
+  - pureRender 需要注意，对于引用类型/子定义子组件，可能会由于每次触发都产生了新对象，导致SCU的结果一直为true，解决方法是  使用变量缓存/状态提升
+
+Q3 如何实现pureRender
+A：
+  - shouldComponentUpdate(nextProps, nextState)
+  - Immutable
+  - React.PureComponent：浅比较 props/state
 
 
-2 实现思路:
-S1 事件触发N秒后执行回调==>  return 函数(事件绑定的 必然要是一个会自动执行的 回调函数) + setTimeout
-S2 N秒内重复触发事件时，则重新计时 ==>  每次计时都是同一个timer闭包 + clearTimeout ==> 这样才能确保上一次的timer会被清空
-S3 修复 e/this/回调函数返回值 丢失问题 ==>  rest参数 + apply + retrn结果
-
-S4 立即执行版 ==> 不存在timer时才 执行响应fn + 定时设置timer N秒后不存在 ==> 这样每次不满N秒后触发时，由于timer一直存在则不会执行回调
-
-
-3 代码实现：
-```js
-function debounce(fn, wait, immediate) {
-  let timer 
-
-  //S1 retrun 函数 + setTimeout， 注意如果此处是箭头函数，则this指向的是全局对象而非 e.target对象
-  return function(...args) {
-    const ctx = this
-
-   // S2 期间内重复触发，则重新计时: 闭包 + clearTimeout
-    if(timer) clearTimeout(timer);
-
-   // S4 立即执行版
-    if (immediate) {
-      let callNow = !timer
-      timer = setTimeout( () => {
-        timer = null
-      }, wait)
-      if (callNow) {
-        return fn.apply(ctx, args)
-      }
-    // S3 非立即执行版
-    } else {
-      timer = setTimeout( () => {
-        return fn.apply(ctx, args)
-      } ,wait)
-    }
-  }
+Q4 什么是Immutable
+A：
+  - 一种特殊封装的对象，特点是 纯函数 + 结构共享
+  - 它的优点是：限制入参不可变，减少复杂度 + 结构共享，节省内存 + 函数式编程
+  - 缺点是：容易和原生JS对象混淆 ==> 使用TS / 自定义变量类型前缀/ Immutable.fromJS
   
-}
-```
-
-
-##  节流部分
-
-1 什么是节流(throttle)
- 每次触发事件后 固定N秒后执行一次回调
-
-2 实现思路
-
-S1  时间戳/顾头不顾尾版:  now - pre > wait时  ==>  执行回调 + pre = now
-S2 定时器/顾尾不顾头版:  不存在timer时 ==> 执行fn + timer重置为null
-S3 头尾合并法:  时间戳版 (更新pre + 执行函数 + 清除定时器版干扰) + 定时器版(更新timer + 执行函数 + 清除时间戳版干扰)
-S4 首尾执行控制法: 对首尾执行 各种新增一个前提条件
-
-
-3 代码实现：
 ```js
-function throttle(fn, wait, options={leading: true, tailing: true}) {
-  let pre = 0
-  let timer
-  return function(...args) {
-    const ctx = this
-    // S1 时间戳法:  清除定时器版干扰 + 更新pre + 执行函数
-    let now = +new Date()
-    if (!pre && options.leading === false) { pre = now }
-    let remaining = wait - (now - pre)
-    if (remaining <= 0 || remaining > wait) {
-      if (timer) {
-        clearTimeout(timer)
-        timer = null
-      }
+import {map} from 'immutable'
+let a = map({
+  name: 'test',
+  hobby: ['1', '2']
+})
 
-      pre = now
-      fn.apply(ctx, args)
-      console.log('时间戳版执行了')
-    //S2 定时器版:  清除时间戳版干扰 + 更新timer为null + 执行函数  
-    } else if (!timer && options.tailing === true) {
-      timer = setTimeout( () => {
-        pre = options.leading === false ? 0 : +new Date()
-        timer = null
-        fn.apply(ctx, args)
-        console.log('定时器版执行了')
-      }, remaining);
-    }
-
-  }
-}
+let b = a.set('name', 'test2')
+a === b  // false
+a.get('hobby') === b.get('hobby') // true，共享未发生变化的 内存地址
 ```
+
+Q5 Immutable如何实现 pureRender
+A:
+  - Immutable.is 通过比较 两个对象的hashCode / ValueOf(JS原生对象)，而不是深遍历/===，来判断2个对象是否相等
+  - 之所以能用 hashCode判断，是因为 Immutable对象 是通过trie数据结构存储的
+
 
 ## 参考文档
 
-01 [JS专题之 跟着underscore学防抖](https://github.com/mqyqingfeng/Blog/issues/22)
-
-02 [JS专题之 跟着underscore学节流](https://github.com/mqyqingfeng/Blog/issues/26)
+01 [深入React技术栈](/)
+02 [React官方文档- 性能优化](https://zh-hans.reactjs.org/docs/optimizing-performance.html#examples)
