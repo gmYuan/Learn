@@ -14,20 +14,15 @@ S2 componentWillMount
   - 一般用于 数据获取/定时器设置
 
 S3 render
-  - 生成了JS对象
+  - 生成虚拟 DOM
 
 S4 componentDidMount
   - 一般用于 配合ref 获取DOM
 
 
-卸载阶段
-S1 componentWillUnmount
-  - 一般用于 清理数据，如定时器/轮询事件等
-
-
 更新阶段
 S1 componentWillReceiveProps(nextProps)
-  - 从父组件接收到新props前 调用
+  - 父组件state/props发生变化时被 调用
 
 S2 shouldComponentUpdate(nextProps, nextState)
   - 一般用于 控制组件是否重渲染
@@ -36,10 +31,20 @@ S2 shouldComponentUpdate(nextProps, nextState)
 
 S3 componentWillUpdate(nextProps, nextState)
   - 组件更新渲染前调用
-  - 不能执行 setState()方法，原因 >>>
+  - 不能执行 setState()方法，原因 
 
-S4 componentDidUpdate()(preProps, preState)
+S4 render
+- 生成新的虚拟 DOM + 执行Diff算法定位出 新旧虚拟DOM的差异
+
+S5 componentDidUpdate()(preProps, preState)
   - 组件重新渲染生成DOM后 调用
+
+
+卸载阶段
+S1 componentWillUnmount
+  - 组件被销毁/key值发生变化时，会销毁该组件
+  - 一般用于 清理数据，如定时器/轮询事件等
+
 
 
 ## refs
@@ -55,6 +60,4 @@ A
 
 ## 参考文档
 
-01 []()
-
-02 []()
+01 [深入浅出React-第02节](/)
