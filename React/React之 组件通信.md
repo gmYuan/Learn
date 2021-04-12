@@ -46,16 +46,18 @@ class EventEmitter {
 }
 ```
 
-
-Q2 context的使用方法是什么
+------
+Q3 context的使用方法是什么
 
 A：
 ```js
 //S1 Context对象 会返回一个 Provider React组件
 comContext = React.createContext(defaultValue)
 
+// 特点：即使B组件的 shouldComponentUpdate返回false, value发生变化时C也能自动接收到最新值
+// 而旧版本的API 则不会接收到最新值
 <comContext.Provider value={xxx}>
-  <B value={xxx} />
+  <B />
 </comContext>
 
 class C extends React.Component {
@@ -69,5 +71,5 @@ class C extends React.Component {
 
 ## 参考文档
 
-01 [深入React技术栈](/)
+01 [深入浅出React](/)
 02 [React官方文档- Context](https://zh-hans.reactjs.org/docs/context.html)

@@ -1,5 +1,17 @@
 ﻿# React之 Redux相关
 
+Q1 Redux的整体流程是什么
+A：
+  - 一个集中管理共享数据的 数据仓库：store = createStore(Reducer, initState, middleApply)
+  - 可以触发更新数据的 动作申请：store.dispatch(action = {type: xxx, payload: yyy})
+  - 根据不同动作类型 ==> 更新并返回新数据的分发处理器：reducer(state, action) => newState对象，reducer是纯函数
+  - Redux是单向数据流
+-----
+
+
+
+
+
 Q1 React有哪些 组件抽象的方法
 A：
   - Mixin
