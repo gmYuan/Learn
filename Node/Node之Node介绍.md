@@ -22,7 +22,27 @@ S3 Node 自底向上 主要整合/提供了以下能力：
 - http-parse库：解析网络请求URL
 ...... 
 
+综上：
 
+C++第三方封装层(处理 异步IO/ DNS解析/) + JS-bingds(编译中转层) + V8(执行JS + 事件循环控制) + Node标准库(简化代码编写)
+这就是Node.js的大体构成。
 
+![Node工作流程图](https://gitee.com/ygming/blog-img/raw/master/img/node_work.png)
+-------
 
 Q2 什么是event Loop
+A：
+S1 对多个事件进行调度管理的 机制：
+文件信息/网络信息/定时任务 等通知Node待处理  ==> 多个任务直接可能同时到达，但需要有一个处理的 优先级机制 ==> Event Loop 人为定义和实现了这种 处理机制
+
+S2 Event Loop的具体管理方法：拆分处理阶段 ==> 每个阶段处理特定的事件 ==> 在这些阶段之间进行 轮询切换
+
+S3 具体分为以下阶段：
+- timers：检查执行 定时器事件；
+- poll：轮询，执行 系统事件；
+- check：主要执行 setImmediate事件；
+
+具体如图：
+![event Loop示意图](https://gitee.com/ygming/blog-img/raw/master/img/node_eventLoop.png)
+
+          
