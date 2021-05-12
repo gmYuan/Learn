@@ -17,10 +17,10 @@ S4 componentDidMount
 
 更新阶段
 S1 componentWillReceiveProps(nextProps)
-  - 父组件state/props发生变化时被 调用
+  - 父组件state/props发生变化时就会被 调用
 
 S2 shouldComponentUpdate(nextProps, nextState)
-  - 一般用于 控制组件是否重渲染
+  - 一般用于 控制组件是否重渲染 re-render
   - 本质是 子组合内的props未更新时，不会因为其他props的更新触发 重新渲染
   - 是一种 性能优化的 方式
 
@@ -42,7 +42,6 @@ S1 componentWillUnmount
 ![React15 生命周期](https://gitee.com/ygming/blog-img/raw/master/img/lifeCircle.png)
 
 ------
-
 Q2 React 16版本的生命周期有哪些，分别有什么作用
 A:
 挂载阶段
