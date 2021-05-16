@@ -7,8 +7,31 @@ A：
   - 根据不同动作类型 ==> 更新并返回新数据的分发处理器：reducer(state, action) => newState对象，reducer是纯函数
   - Redux是单向数据流
 
+<<<<<<< HEAD
 用示意图表示为
 ![](https://gitee.com/ygming/blog-img/raw/master/img/react_redux.png)
+=======
+用代码表示为：
+```js
+import { createStore } from 'redux'
+// 创建 reducer
+const reducer = (state, action) => {
+    // 此处是各种样的 state处理逻辑
+    return new_state
+}
+// 基于 reducer 创建 state
+const store = createStore(reducer)
+
+// 创建一个 action，这个 action 用 “ADD_ITEM” 来标识 
+const action = {
+  type: "ADD_ITEM",
+  payload: '<li>text</li>'
+}
+// 使用 dispatch 派发 action，action 会进入到 reducer 里触发对应的更新
+store.dispatch(action)
+```
+
+>>>>>>> ebfba8c291f434c54065efb64bf12e74ec0da8d9
 
 -----
 

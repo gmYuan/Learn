@@ -3,7 +3,7 @@
 Q1 组件通信方法有哪些
 A：
   - parentA 通信 childB：通过props 传递值
-  - B 通信 A：A 通过props 传入函数 给B  + 该函数内部可以访问A的上下文环境 + B调用传入的props函数
+  - B 通信 A：A 通过props 传入函数 给B  & 该函数内部可以访问A的上下文环境 + B调用传入的props函数
   - 多层嵌套组件通信：通过 context
   - 无嵌套关系的组件通信：发布/订阅模式 ==> 会带来逻辑混乱，加入流程约束 ==> Redux
 
@@ -40,6 +40,7 @@ class EventEmitter {
   // 取消订阅
   off(type, cb) {
     if ( this.eventMap[type] ) {
+      // indexOf不存在时会返回-1 ==> splice(-1, 1) 就会误删掉数组最后一个元素 ==> -1 >>> 0 无符号右移，值为1*10e32
       this.eventMap[type].splice(this.eventMap[type].indexOf(cb) >>> 0, 1);
     }
   }
@@ -51,7 +52,7 @@ Q3 context的使用方法是什么
 
 A：
 ```js
-//S1 Context对象 会返回一个 Provider React组件
+//S1 创建一个 context 对象
 comContext = React.createContext(defaultValue)
 
 // 特点：即使B组件的 shouldComponentUpdate返回false, value发生变化时C也能自动接收到最新值
