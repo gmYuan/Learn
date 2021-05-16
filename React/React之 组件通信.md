@@ -69,6 +69,9 @@ class C extends React.Component {
 }
 ```
 
+用图表示为
+![context示意图](https://gitee.com/ygming/blog-img/raw/master/img/react_context.png)
+
 ## 参考文档
 
 01 [深入浅出React](/)

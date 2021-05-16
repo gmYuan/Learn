@@ -6,6 +6,10 @@ A：
   - 可以触发更新数据的 动作申请：store.dispatch(action = {type: xxx, payload: yyy})
   - 根据不同动作类型 ==> 更新并返回新数据的分发处理器：reducer(state, action) => newState对象，reducer是纯函数
   - Redux是单向数据流
+
+用示意图表示为
+![](https://gitee.com/ygming/blog-img/raw/master/img/react_redux.png)
+
 -----
 
 

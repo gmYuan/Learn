@@ -47,10 +47,13 @@ A:
 挂载阶段
 S1 constructor
 S2 componentWillMount ==> static getDerivedStateFromProps(props, state)
-  - 组件 初始化/更新时会被调用
+  - 组件 初始化/更新时会被调用，具体作用见下文
 
 S3 render：生成虚拟 DOM
 S4 componentDidMount
+
+具体和React 15版本的差异，参见下图：
+![挂载阶段对比图](https://gitee.com/ygming/blog-img/raw/master/img/react_life2.png)
 
 
 更新阶段
@@ -59,7 +62,6 @@ S1 componentWillReceiveProps(nextProps)  ==> static getDerivedStateFromProps(pro
   - 是一个静态方法，因此在这个方法内部 访问不到this
   - props表示当前组件接收到的来自父组件的props，state表示当前组件 自身的state
   - 它需要返回一个对象a，该派生对象被添加到state中，即 this.state =  { ...this.state, a }
-
 
 S2 shouldComponentUpdate(prevProps, nextState)
 S3 render：生成新的虚拟 DOM + 执行Diff算法定位出 新旧虚拟DOM的差异
@@ -72,6 +74,10 @@ S4 componentWillUpdate(nextProps, nextState) ==>  getSnapshotBeforeUpdate(prevPr
 S5 componentDidUpdate(preProps, preState, valueFromSnapshot)
   - valueFromSnapshot可以接收到 getSnapshotBeforeUpdate的返回值
 
+具体和React 15版本的差异，参见下图：
+![更新阶段对比图](https://gitee.com/ygming/blog-img/raw/master/img/react_life3.png)
+
+
 卸载阶段
 S1 componentWillUnmount
 
@@ -79,13 +85,12 @@ S1 componentWillUnmount
 ![React16 生命周期](https://gitee.com/ygming/blog-img/raw/master/img/lifeCircle2.png)
 
 -----
-
 Q3 React 16版本的生命周期 为什么要发生这些变动
 A:
 S1 
   - React 16引入了重要的更新==> Fiber架构，它会使原本同步的渲染过程 变成异步的
   
-  - 同步渲染的递归调用栈是非常深的，只有最底层的调用返回了，整个渲染过程才会开始逐层返回，同步渲染一旦开始，便会牢牢抓住主线程不放，直到递归彻底完成。在这个过程中，浏览器没有办法处理任何渲染之外的事情，会进入一种无法处理用户交互的状态。因此若渲染时间稍微长一点，页面就会面临卡顿甚至卡死的风险。
+  - Diff算法的更新是递归算法，而 同步渲染的递归调用栈是非常深的，只有最底层的调用返回了，整个渲染过程才会开始逐层返回，同步渲染一旦开始，便会牢牢抓住主线程不放，直到递归彻底完成。在这个过程中，浏览器没有办法处理任何渲染之外的事情，会进入一种无法处理用户交互的状态。因此若渲染时间稍微长一点，页面就会面临卡顿甚至卡死的风险。
   - 而 Fiber 会将一个大的更新任务拆解为许多个小任务。每当执行完一个小任务时，渲染线程都会把主线程交回去，看看有没有优先级更高的工作要处理，确保不会出现其他任务被“饿死”的情况，进而避免同步渲染带来的卡顿。在这个过程中，渲染线程不再“一去不回头”，而是可以被打断的，这就是所谓的“异步渲染”
 
   - 根据“能否被打断”这一标准，React 16 的生命周期被划分为了 render 和 commit 两个阶段，而 commit 阶段又被细分为了 pre-commit 和 commit
@@ -96,6 +101,7 @@ S2
   - commit阶段：可以使用 DOM，运行副作用，安排更新
   
 总的来说，render 阶段在执行过程中允许被打断，而 commit 阶段则总是同步执行的
+
 为什么这样设计？简单来说，由于 render 阶段的操作对用户来说其实是“不可见”的，所以就算打断再重启，对用户来说也是零感知。而 commit 阶段的操作则涉及真实 DOM 的渲染，所以这个过程必须用同步渲染来求稳。
 
 S3
