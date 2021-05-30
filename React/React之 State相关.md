@@ -1,101 +1,43 @@
-﻿# 性能之 防抖和节流
+﻿# React之 State相关
 
-## 防抖部分
+Q1 setState是异步还是同步的
+A:
+S1 setState是异步的，只是在某些特殊语句下会表现成同步
 
-1 什么是防抖(debounce)：
-触发事件N秒后 才执行响应回调，N秒内每次重新触发，则都重新开始计时
+S2.1 每次调用setState，都会在在 微任务队列中，入队一个setState任务；
+S2.2 当同步语句都执行完成后，React会对 已有setState任务进行合并，形成批量更新 + 执行一次重渲染(re-render)流程
+S2.3 之所以是 批量更新，就是为了避免 在短时间内触发多次重渲染流程
 
-
-2 实现思路:
-S1 事件触发N秒后执行回调==>  return 函数(事件绑定的 必然要是一个会自动执行的 回调函数) + setTimeout
-S2 N秒内重复触发事件时，则重新计时 ==>  每次计时都是同一个timer闭包 + clearTimeout ==> 这样才能确保上一次的timer会被清空
-S3 修复 e/this/回调函数返回值 丢失问题 ==>  rest参数 + apply + retrn结果
-
-S4 立即执行版 ==> 不存在timer时才 执行响应fn + 定时设置timer N秒后不存在 ==> 这样每次不满N秒后触发时，由于timer一直存在则不会执行回调
-
-
-3 代码实现：
 ```js
-function debounce(fn, wait, immediate) {
-  let timer 
+this.setState({
+  count: this.state.count + 1    ===>    入队，[count+1的任务]
+})
 
-  //S1 retrun 函数 + setTimeout， 注意如果此处是箭头函数，则this指向的是全局对象而非 e.target对象
-  return function(...args) {
-    const ctx = this
+this.setState({
+  count: this.state.count + 1    ===>    入队，[count+1的任务，count+1的任务]
+});
 
-   // S2 期间内重复触发，则重新计时: 闭包 + clearTimeout
-    if(timer) clearTimeout(timer);
+this.setState({
+  count: this.state.count + 1    ===>    入队, [count+1的任务，count+1的任务, count+1的任务]
+});
 
-   // S4 立即执行版
-    if (immediate) {
-      let callNow = !timer
-      timer = setTimeout( () => {
-        timer = null
-      }, wait)
-      if (callNow) {
-        return fn.apply(ctx, args)
-      }
-    // S3 非立即执行版
-    } else {
-      timer = setTimeout( () => {
-        return fn.apply(ctx, args)
-      } ,wait)
-    }
-  }
-  
-}
+↓
+合并 state，[count+1的任务]
+↓
+执行 count+1的任务
+
+// 多次 +1 最终只有一次生效，是因为在同一个方法中多次 setState的合并动作不是单纯地将更新累加
+// 对于相同属性的设置，React 只会为其保留最后一次的更新
 ```
 
-
-##  节流部分
-
-1 什么是节流(throttle)
- 每次触发事件后 固定N秒后执行一次回调
-
-2 实现思路
-
-S1  时间戳/顾头不顾尾版:  now - pre > wait时  ==>  执行回调 + pre = now
-S2 定时器/顾尾不顾头版:  不存在timer时 ==> 执行fn + timer重置为null
-S3 头尾合并法:  时间戳版 (更新pre + 执行函数 + 清除定时器版干扰) + 定时器版(更新timer + 执行函数 + 清除时间戳版干扰)
-S4 首尾执行控制法: 对首尾执行 各种新增一个前提条件
+-----
+Q2 为什么在 setTimeout中的 setState语句，会表现出是 同步的形式
+A:
+S1
 
 
-3 代码实现：
-```js
-function throttle(fn, wait, options={leading: true, tailing: true}) {
-  let pre = 0
-  let timer
-  return function(...args) {
-    const ctx = this
-    // S1 时间戳法:  清除定时器版干扰 + 更新pre + 执行函数
-    let now = +new Date()
-    if (!pre && options.leading === false) { pre = now }
-    let remaining = wait - (now - pre)
-    if (remaining <= 0 || remaining > wait) {
-      if (timer) {
-        clearTimeout(timer)
-        timer = null
-      }
 
-      pre = now
-      fn.apply(ctx, args)
-      console.log('时间戳版执行了')
-    //S2 定时器版:  清除时间戳版干扰 + 更新timer为null + 执行函数  
-    } else if (!timer && options.tailing === true) {
-      timer = setTimeout( () => {
-        pre = options.leading === false ? 0 : +new Date()
-        timer = null
-        fn.apply(ctx, args)
-        console.log('定时器版执行了')
-      }, remaining);
-    }
-
-  }
-}
-```
 
 ## 参考文档
 
-01 [JS专题之 跟着underscore学防抖](https://github.com/mqyqingfeng/Blog/issues/22)
-
-02 [JS专题之 跟着underscore学节流](https://github.com/mqyqingfeng/Blog/issues/26)
+01 [React深入浅出 之第11章](/)
