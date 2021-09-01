@@ -17,7 +17,7 @@ S1 URL的格式是：`scheme://host:port path?query#fragment`
   - path：标记资源所在的位置，path部分必须以 "/" 开始
   - fragment：片段标识符，它是 URI所定位的资源 内部的一个 锚点/标签，仅由客户端使用
 
-![](https://gitee.com/ygming/blog-img/raw/master/img/http_4.png)
+![URL格式图](https://gitee.com/ygming/blog-img/raw/master/img/http_4.png)
 
 ------
 Q3 URL的编码是什么
