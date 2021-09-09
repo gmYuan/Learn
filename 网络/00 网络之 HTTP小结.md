@@ -78,32 +78,47 @@ S4 服务器用 Content头表明 实际发送的数据类型 和 编码格式
 Q3 HTTP如何传输大文件
 A:
 
-S1 数据压缩："Accept-Encoding " 请求头字段 + "Content-Encoding"响应字段
-  - 压缩 通常只对文本文件有较好的压缩率
-  - 图片、音频视频等 多媒体数据 已经是高度压缩的，用gzip处理也不会变小
+S1 数据压缩
+  -  Accept-Encoding  请求头字段 + Content-Encoding  响应字段
+  - 缺点：通常只对文本文件有较好的压缩率，图片、音频视频等 多媒体数据 已经是高度压缩的，用gzip效果反而不佳
 
-S2 分块传输
-  -  "Transfer-Encoding: chunked" 表示 响应报文里的body部分  不是一次性发过来的，而是分成了许多的 块(chunk)逐个发送
-  -  "Transfer-Encoding: chunked" 的内容长度是未知的，因此和 "Content-Length" 响应字段互斥出现 
 
-S2.2 分块传输的编码规则 采用了明文方式，具体见下：
-  - 每个分块 包含两个部分，长度头和数据块；
-  - 长度头 是以 CRLF(回车换行，即\r\n) 结尾的一行明文，用 16 进制数字表示长度
-  - 数据块 紧跟在长度头后，最后 也用CRLF结尾，但数据不包含 CRLF
-  - 最后用一个 长度为0的块 表示结束，即 "0\r\n\r\n"
+S2 "服务端的化整为零" ==> 分块传输
+  - 请求/响应对： Transfer-Encoding: chunked 响应头字段
+  - 和 "Content-Length" 响应字段互斥出现 (分块传输无法得知总长)
+  
+S2.3 分块传输的编码规范：
+  - 长度头：表明这次流数据的长度 (16进制数字) + CRLF(回车换行，即\r\n)
+  - 数据块：流数据传输内容 + CRLF
+  - 结束分块：0 + CRLF
 
 具体示意图，见
 ![]()
+![]()
 
-S3 范围请求
-  - 首先需要 服务端支持 局部范围请求内容 ==> 响应字段 "Accept-Ranges: bytes"
-  - 客户端通知 想要获取的内容范围 ==> 请求字段 " range: bytes=x-y "
 
-服务器收到 Range 字段后，需要做四件事：
-  - 第一，检查范围是否合法，比如文件只有100个字节，但请求 "200-300"，这就是范围越界了。服务器会返回状态码416，意思是“你的范围请求有误，我无法处理，请再检查一下”。
+S3 "客户端的化整为零" ==> 范围请求
+  - 请求/响应对： range: bytes=x-y 请求字段 + Accept-Ranges: bytes 响应字段
 
-  - 第二，如果范围正确，服务器就根据Range头 计算偏移量 + 读取文件片段了，之后返回状态码" 206 Partial Content "，表示body只是原数据的一部分
+S3.2 服务端的处理流程：
+  - 检查范围的合法性，非法时 服务器会返回 状态码416，意思是“范围请求有误”
 
-  - 第三，服务器添加一个响应头字段 "Content-Range: bytes x-y/length"，告诉片段的实际偏移量和资源的总大小
+  - 根据 Range头计算偏移量 + 读取文件片段，之后返回 状态码206 Partial Content，表示body只是原数据的一部分
 
-  - 最后发送数据，把片段用TCP发给客户端，这样一个范围请求就算是处理完成了。
+  - 服务器添加 响应头字段 "Content-Range: bytes x-y/length"，说明片段的实际偏移量和资源的总大小
+
+  - 发送数据，把片段用TCP发给客户端
+
+  ```js
+GET /16-2 HTTP/1.1
+Host: www.chrono.com
+Range: bytes=0-31
+------------------------
+HTTP/1.1 206 Partial Content
+Content-Length: 32
+Accept-Ranges: bytes
+Content-Range: bytes 0-31/96
+ 
+// this is a plain text json doc
+
+```
