@@ -45,3 +45,65 @@ S6 HTTP是明文传输的，协议里的报文(header)不使用二进制数据�
   - 缺点是 传输内容不够安全：明文传输 + 无身份验证 + 无内容完整性校验
 
 ------
+Q2 HTTP的双方如何 通信识别传输的数据类型
+A:
+
+S1 对于数据类型，HTTP使用了MIME规范的子集  (多用途互联网邮件扩展)
+  - text：文本格式的可读数据，如 text/html、text/plain、text/css 等
+  - image：图像文件，有 image/gif、image/jpeg、image/png 等
+  - audio/video：音频和视频数据，如 audio/mpeg、video/mp4 等
+  - application：数据格式不固定，可能是文本也可能是二进制，必须由上层应用程序来解释
+，如application/json、application/javascript、application/pdf、application/octet-stream(未知类型，不透明的二进制数据)
+
+S2 HTTP 在传输时为了节约带宽，有时候还会压缩数据
+  - Encoding type 表明了 数据压缩的编码格式，这样对方才能正确解压缩，还原出原始的数据
+  - 常用的有三种：
+  - gzip：GNU zip 压缩格式
+  - deflate：zlib（deflate）压缩格式，流行程度仅次于 gzip
+  - br：一种专门为 HTTP优化的 新压缩算法（Brotli）
+有了 MIME type 和 Encoding type，通信双方可以识别和处理 body数据了
+
+
+S3 客户端用 Accept头表明 希望接收的 数据类型 和 支持的编码格式
+  - Accept: text/html,application/xml,image/webp,image/png
+  - Accept-Encoding: gzip, deflate, br
+  - 如果 请求报文里没有 Accept-Encoding字段，就表示客户端不支持压缩数据
+
+S4 服务器用 Content头表明 实际发送的数据类型 和 编码格式
+  - Content-Type: text/html
+  - Content-Encoding: gzip
+  - 如果 响应报文里没有 Content-Encoding字段，就表示响应数据没有被压缩
+
+--------
+Q3 HTTP如何传输大文件
+A:
+
+S1 数据压缩："Accept-Encoding " 请求头字段 + "Content-Encoding"响应字段
+  - 压缩 通常只对文本文件有较好的压缩率
+  - 图片、音频视频等 多媒体数据 已经是高度压缩的，用gzip处理也不会变小
+
+S2 分块传输
+  -  "Transfer-Encoding: chunked" 表示 响应报文里的body部分  不是一次性发过来的，而是分成了许多的 块(chunk)逐个发送
+  -  "Transfer-Encoding: chunked" 的内容长度是未知的，因此和 "Content-Length" 响应字段互斥出现 
+
+S2.2 分块传输的编码规则 采用了明文方式，具体见下：
+  - 每个分块 包含两个部分，长度头和数据块；
+  - 长度头 是以 CRLF(回车换行，即\r\n) 结尾的一行明文，用 16 进制数字表示长度
+  - 数据块 紧跟在长度头后，最后 也用CRLF结尾，但数据不包含 CRLF
+  - 最后用一个 长度为0的块 表示结束，即 "0\r\n\r\n"
+
+具体示意图，见
+![]()
+
+S3 范围请求
+  - 首先需要 服务端支持 局部范围请求内容 ==> 响应字段 "Accept-Ranges: bytes"
+  - 客户端通知 想要获取的内容范围 ==> 请求字段 " range: bytes=x-y "
+
+服务器收到 Range 字段后，需要做四件事：
+  - 第一，检查范围是否合法，比如文件只有100个字节，但请求 "200-300"，这就是范围越界了。服务器会返回状态码416，意思是“你的范围请求有误，我无法处理，请再检查一下”。
+
+  - 第二，如果范围正确，服务器就根据Range头 计算偏移量 + 读取文件片段了，之后返回状态码" 206 Partial Content "，表示body只是原数据的一部分
+
+  - 第三，服务器添加一个响应头字段 "Content-Range: bytes x-y/length"，告诉片段的实际偏移量和资源的总大小
+
+  - 最后发送数据，把片段用TCP发给客户端，这样一个范围请求就算是处理完成了。
