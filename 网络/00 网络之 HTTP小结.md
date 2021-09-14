@@ -82,7 +82,6 @@ S1 数据压缩
   -  Accept-Encoding  请求头字段 + Content-Encoding  响应字段
   - 缺点：通常只对文本文件有较好的压缩率，图片、音频视频等 多媒体数据 已经是高度压缩的，用gzip效果反而不佳
 
-
 S2 "服务端的化整为零" ==> 分块传输
   - 请求/响应对： Transfer-Encoding: chunked 响应头字段
   - 和 "Content-Length" 响应字段互斥出现 (分块传输无法得知总长)
@@ -93,9 +92,7 @@ S2.3 分块传输的编码规范：
   - 结束分块：0 + CRLF
 
 具体示意图，见
-![]()
-![]()
-
+![分块传输 规范图](https://gitee.com/ygming/blog-img/raw/master/img/http8.png)
 
 S3 "客户端的化整为零" ==> 范围请求
   - 请求/响应对： range: bytes=x-y 请求字段 + Accept-Ranges: bytes 响应字段
@@ -114,11 +111,73 @@ GET /16-2 HTTP/1.1
 Host: www.chrono.com
 Range: bytes=0-31
 ------------------------
+
 HTTP/1.1 206 Partial Content
-Content-Length: 32
 Accept-Ranges: bytes
+Content-Length: 32
 Content-Range: bytes 0-31/96
+
  
 // this is a plain text json doc
-
 ```
+
+S3.3 批量范围请求：
+  - Range请求头有多个范围 + Content-Type：multipart/byteranges; boundary值
+  - 响应的body规范：boundary + Content-Type + Content-Range
+  - 最后用 "- -boundary- -" 表示所有的分段结束
+
+见示意图
+![批量范围 规范图](https://gitee.com/ygming/blog-img/raw/master/img/http9.png)
+
+```js
+GET /16-2 HTTP/1.1
+Host: www.chrono.com
+Range: bytes=0-9, 20-29
+-------------------------
+
+HTTP/1.1 206 Partial Content
+Accept-Ranges: bytes
+Content-Type: multipart/byteranges; boundary=00000000001
+Content-Length: 189
+Connection: keep-alive
+
+--00000000001
+Content-Type: text/plain
+Content-Range: bytes 0-9/96
+ 
+// this is
+--00000000001
+Content-Type: text/plain
+Content-Range: bytes 20-29/96
+ 
+ext json d
+--00000000001--
+```
+
+-------------------
+Q4 介绍 HTTP的连接管理机制
+A:
+S1 HTTP 0.9/1.0 连接机制：短连接/无连接
+  - 每次的请求-响应(4个包，2个RTT)，都需要花费 "三次握手"(1个RTT) + "四次挥手"(2个RTT)，使用浪费率为 3/5=60%
+
+![短连接缺点](https://gitee.com/ygming/blog-img/raw/master/img/http10.png)
+
+
+S2 HTTP1.1 连接机制：长连接
+  - 只在第一次发生请求时 新建TCP握手，之后的请求都复用这个TCP连接，本质是 "成本均摊"
+  - 使用 通用头字段 "Connection: keep-alive"
+  - 保持TCP连接 需要服务器 消耗内存保存状态，所以如果有大量长连接只连不发，就会很快耗尽服务器的资源，即所谓的 DDOS
+
+S3.2 所以服务器需要使用 合适的策略，以关闭长连接
+  - 客户端主动发送 请求头字段 Connection: close
+  - 连接时长 角度：设置长连接的超时时间(keepalive_timeout)，在一段时间内 连接上没有任何数据收发 就主动断开连接
+  - 处理请求数量 角度：设置长连接内 可发送的最大请求次数(keepalive_requests)，当在这个连接上处理了 N个请求后，就会主动断开连接
+
+S4 处理 "队头堵塞" 问题：
+  - 所谓 "队头堵塞"，是指HTTP规定 服务器要按入队时间来处理HTTP请求，当 前一个请求的处理耗时很长后，后面的请求就只能被堵塞，进入等待
+  
+  - 方法1 "并发连接"：客户端 同时对一个域名发起多个长连接，用数量来解决质量的问题。但是这种方法不能滥用(服务器需要承载 用户数×并发数的 长连接)，实际一般是 并发 6~8个连接
+
+  - 方法2 "域名分片"：多开几个域名(如 x1.chrono.com / x2.chrono.com)，而这些域名都指向同一台服务器 X.chrono.com，这样 实际长连接的数量就又上去了
+
+
